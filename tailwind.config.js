@@ -1,44 +1,62 @@
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
-  theme: {
-    extend: {
-      colors: {
-        beatsBlack: {
-          900: '#121212',
-          700: '#2C2C2C',
-          400: '#333333',
-          100: '#414141',
-        },
+    mode: 'jit',
+    purge: ['./src/**/*.{js,jsx,ts,tsx,vue}', './pages/**/*.{js,jsx,ts,tsx,vue}'],
+    darkMode: false, // or 'media' or 'class'
+    theme: {
+        extend: {
+            colors: {
+                beatsBlack: {
+                    900: '#121212',
+                    800: '#202020',
+                    700: '#2C2C2C',
+                    400: '#333333',
+                    100: '#414141',
+                },
 
-        beatsWhite: {
-          900: '#E0E0E0',
-          700: '#A0A0A0',
-          500: '#696969',
-        },
+                beatsWhite: {
+                    900: '#E0E0E0',
+                    700: '#A0A0A0',
+                    500: '#696969',
+                    full: '#FFFFFF',
+                },
 
-        beatsGreen: {
-          900: '#A8CF45',
-          500: '#B8CF7C',
-        },
+                beatsGreen: {
+                    900: '#A8CF45',
+                    700: '#B8CF7C',
+                    300: '#3F452F',
+                    100: '#31322D',
+                },
 
-        beatsYellow: {
-          900: '#FAEA3C',
-          500: '#D2C964',
-        },
+                beatsYellow: {
+                    900: '#FAEA3C',
+                    500: '#D2C964',
+                },
 
-        beatsRed: {
-          900: '#EA6A6A',
+                beatsRed: {
+                    900: '#EA6A6A',
+                },
+            },
+            fontFamily: {
+                Montserrat: ['Montserrat', 'sans-serif'],
+                SourceSans: ['Source Sans Pro', 'sans-serif'],
+            },
+
+            borderRadius: {
+                '10px': '0.625rem',
+                '20px': '1.25rem',
+            },
+
+            backgroundImage: {
+                'before-decorator': "url('../public/before.svg')",
+                'after-decorator': "url('../public/after.svg')",
+            },
+            transitionDuration: {
+                400: '400ms',
+            },
         },
-      },
-      fontFamily: {
-        Montserrat: ['Montserrat', 'sans-serif'],
-        SourceSans: ['Source Sans Pro', 'sans-serif'],
-      },
     },
-  },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
+    variants: {
+        extend: {},
+    },
+    plugins: [require('@tailwindcss/forms')],
 };
