@@ -7,16 +7,16 @@ export function StrategiesBox() {
             flex flex-col justify-between w-7/12
             p-6'
         >
-            <h2 className='text-sm font-SourceSans mb-8'>Information Security Attributes</h2>
+            <h3 className='text-sm font-SourceSans mb-8'>Information Security Attributes</h3>
 
-            <div className='flex justify-between flex-wrap'>
-                <Chip attributeName='Confidentiality' iconName='info' margin='3' />
-                <Chip attributeName='Integrity' iconName='info' margin='3' />
-                <Chip attributeName='Availability' iconName='info' margin='3' />
-                <Chip attributeName='Authentication' iconName='info' margin='3' />
-                <Chip attributeName='Authorization' iconName='info' margin='3' />
-                <Chip attributeName='Accountability' iconName='info' margin='3' />
-                <Chip attributeName='Non-Repudiation' iconName='info' margin='3' />
+            <div className='flex flex-wrap gap-2'>
+                <Chip attributeName='Confidentiality' iconName='info' isChipSelectable={true} />
+                <Chip attributeName='Integrity' iconName='info' isChipSelectable={true} />
+                <Chip attributeName='Availability' iconName='info' isChipSelectable={true} />
+                <Chip attributeName='Authentication' iconName='info' isChipSelectable={true} />
+                <Chip attributeName='Authorization' iconName='info' isChipSelectable={true} />
+                <Chip attributeName='Accountability' iconName='info' isChipSelectable={true} />
+                <Chip attributeName='Non-Repudiation' iconName='info' isChipSelectable={true} />
             </div>
         </div>
     );

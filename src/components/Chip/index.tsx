@@ -1,25 +1,43 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useGlobalData } from '../../../contexts/GlobalDataContext';
 
-interface ChipProp {
+interface ChipProps {
     iconName: string;
     attributeName: string;
-    selectedChip?: string;
-    margin?: string;
+    isChipSelectable: boolean;
 }
 
-export function Chip({ iconName, attributeName, selectedChip, margin }: ChipProp) {
+export function Chip({ iconName, attributeName, isChipSelectable }: ChipProps) {
     const [chipSelected, setChipSelected] = useState(false);
+    const { toggleSecurityInformationAttributes } = useGlobalData();
 
-    const borderColor = chipSelected
-        ? 'border-beatsGreen-700'
-        : 'border-beatsWhite-900 hover:opacity-80 hover:scale-95';
-    const receivedMargin = margin ? `mx-${margin}` : '';
+    const initialBorder = isChipSelectable ? 'hover:opacity-80 hover:scale-95' : 'border-beatsWhite-900';
+    const [borderColor, setBorderColor] = useState(initialBorder);
+
+    useEffect(() => {
+        const currentBorder =
+            (!isChipSelectable && 'border-beatsWhite-900') ||
+            (!chipSelected && 'border-beatsWhite-900 hover:opacity-80 hover:scale-95') ||
+            'border-beatsGreen-700';
+        /*
+        This short circuit evaluates in the order:
+        1st line - Is the chip selectable? If it doesnt, no hovers only the border is white
+        2nd line - If the chip is selectable, is its state currently selected? If not, make it hoverable
+        3rd line - If the chip is selectable and its state is currently selected, make the border green
+        */
+
+        setBorderColor(currentBorder);
+    }, [chipSelected, isChipSelectable]);
+
+    function alterSelectedState() {
+        isChipSelectable ? (setChipSelected(!chipSelected), toggleSecurityInformationAttributes(attributeName)) : null;
+    }
 
     return (
         <div
-            className={`rounded ${borderColor} border flex justify-between items-center p-1 ${receivedMargin}`}
-            onClick={() => setChipSelected(!chipSelected)}
+            className={`rounded border ${borderColor} flex justify-between items-center p-1`}
+            onClick={alterSelectedState}
         >
             <Image
                 src={`/Material Icons/${iconName}.svg`}

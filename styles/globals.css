@@ -23,6 +23,25 @@
     text-decoration-thickness: 0.125rem;
 }
 
+.max-width-033 {
+    max-width: 33%;
+}
+
+input[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    /* -webkit-user-modify: read-write !important; */
+    /* height: 28px; */
+    height: 1em;
+    width: 1em;
+    background: url('../public/clear_button.png');
+    background-size: contain;
+}
+
+input[type='search']:hover::-webkit-search-cancel-button {
+    opacity: 0.85;
+    pointer-events: all;
+}
+
 html,
 body {
     padding: 0;

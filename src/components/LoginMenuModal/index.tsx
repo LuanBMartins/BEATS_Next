@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { LoginMenuItem } from '../LoginMenuItem';
+import { useGlobalData } from '../../../contexts/GlobalDataContext';
 
 interface LoginMenuModalProps {
     closingFunction: Function;
 }
 
 export function LoginMenuModal({ closingFunction }: LoginMenuModalProps) {
+    const { loginData } = useGlobalData();
+    const { status, userType } = loginData;
+
     const ref: any = useRef();
 
     useEffect(() => {
@@ -35,7 +39,9 @@ export function LoginMenuModal({ closingFunction }: LoginMenuModalProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
         >
-            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>Usuário</h4>
+            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>
+                {userType == 'visitor' ? 'Visitor' : 'userName'}
+            </h4>
 
             <ul>
                 <LoginMenuItem iconName='person' optionName='Perfil' />

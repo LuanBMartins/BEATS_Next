@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Header } from '../src/components/Header';
 import { Container } from '../src/components/Container';
 import { ImageContainer } from '../src/components/ImageContainer';
 import { SearchBar } from '../src/components/SearchBar';
@@ -11,11 +10,12 @@ const Home: NextPage = () => {
     return (
         <div className='min-h-screen bg-beatsBlack-900 text-beatsWhite-900'>
             <Head>
-                <title>BEATS</title>
+                <title>BEATS | Home</title>
             </Head>
-            <Header />
             <Container
-                containerClasses={`my-20 mx-32 p-12 bg-beatsBlack-700 rounded-10px relative
+                containerType='main'
+                containerClasses={` container-height
+                                    my-20 mx-28 p-12 bg-beatsBlack-700 rounded-10px relative
                                     before:bg-before-decorator
                                     before:bg-no-repeat before:bg-cover before:bg-center
                                     before:absolute
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
 
                 <h1 className='font-Montserrat text-4xl text-center'>Architectural Strategies in Security</h1>
 
-                <SearchBar receivedHeight={40} />
+                <SearchBar receivedHeight='large' />
 
                 <RadioSelector />
 
