@@ -1,8 +1,13 @@
 import { Container } from '../Container';
 import { Chip } from '../Chip';
 
+interface attributesDataType {
+    name: string;
+    eye_color: string;
+}
+
 interface resultsProps {
-    attributes: object;
+    attributes: attributesDataType;
     routingData: object;
 }
 

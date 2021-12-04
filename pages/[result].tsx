@@ -10,7 +10,22 @@ import { ResultBox } from '../src/components/ResultBox';
 import { useFetch } from '../src/hooks/useFetch';
 import { useGlobalData } from '../contexts/GlobalDataContext';
 import { useRouter } from 'next/router';
+import { GetStaticProps, GetStaticPaths } from 'next';
 import { useEffect } from 'react';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    return {
+        paths: [],
+        fallback: true,
+    };
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+    return {
+        props: {},
+        revalidate: 60 * 60 * 24, // In seconds -> Trying to regenerate the page if there's difference to the cache every access after 24h
+    };
+};
 
 export default function HomePage() {
     const route = 'people/1';
@@ -30,7 +45,7 @@ export default function HomePage() {
         termToSearch == '' && queryData ? setTermToSearch(queryData.a! as string) : '';
     }, [router.isReady, queryData, setTermToSearch, termToSearch]);
 
-    if (!data) {
+    if (router.isFallback || !data) {
         return (
             <>
                 <Head>
