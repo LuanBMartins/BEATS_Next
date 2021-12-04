@@ -13,7 +13,7 @@ export function LoginButton() {
     const isPresent = usePresence();
 
     return (
-        <div className='w-60 relative'>
+        <div className='w-60 relative z-10'>
             <AnimatePresence initial={false}>
                 {!isModalOpen && (
                     <motion.button

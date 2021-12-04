@@ -33,21 +33,75 @@ export function LoginMenuModal({ closingFunction }: LoginMenuModalProps) {
     return (
         <motion.div
             ref={ref}
-            className='rounded-20px bg-beatsBlack-800 border border-beatsWhite-900 flex flex-col w-60 h-40 p-6 z-10'
+            className='rounded-20px bg-beatsBlack-800 border border-beatsWhite-900 flex flex-col w-60 h-auto p-6'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
         >
-            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>
-                {userType == 'visitor' ? 'Visitor' : 'userName'}
-            </h4>
+            {(userType == 'visitor' && <VisitorTypeList />) ||
+                (userType == 'standardUser' && <StandardUserTypeList />) ||
+                (userType == 'council' && <CouncilTypeList />) ||
+                (userType == 'administrator' && <AdministratorTypeList />)}
+        </motion.div>
+    );
+}
+
+function VisitorTypeList() {
+    return (
+        <>
+            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>Visitor</h4>
 
             <ul>
-                <LoginMenuItem iconName='person' optionName='Perfil' />
-                <LoginMenuItem iconName='ballot' optionName='Acompanhar Solicitacoes' />
-                <LoginMenuItem iconName='add' optionName='Solicitar Nova estrategia' />
+                <LoginMenuItem iconName='login' optionName='Log In' />
+                <LoginMenuItem iconName='register' optionName='Sign Up' />
             </ul>
-        </motion.div>
+        </>
+    );
+}
+
+function StandardUserTypeList() {
+    return (
+        <>
+            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>UserName</h4>
+
+            <ul>
+                <LoginMenuItem iconName='person_outline' optionName='Profile' />
+                <LoginMenuItem iconName='ballot' optionName='My Requests Status' />
+                <LoginMenuItem iconName='add' optionName='Request New Strategy' />
+                <LoginMenuItem iconName='logout' optionName='Logout' />
+            </ul>
+        </>
+    );
+}
+
+function CouncilTypeList() {
+    return (
+        <>
+            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>UserName</h4>
+
+            <ul>
+                <LoginMenuItem iconName='person_outline' optionName='Profile' />
+                <LoginMenuItem iconName='council' optionName='Council' />
+                <LoginMenuItem iconName='ballot' optionName='Check Requests Status' />
+                <LoginMenuItem iconName='add' optionName='Request New Strategy' />
+                <LoginMenuItem iconName='logout' optionName='Logout' />
+            </ul>
+        </>
+    );
+}
+
+function AdministratorTypeList() {
+    return (
+        <>
+            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>UserName</h4>
+
+            <ul>
+                <LoginMenuItem iconName='person_outline' optionName='Profile' />
+                <LoginMenuItem iconName='person_search' optionName='Search Users' />
+                <LoginMenuItem iconName='add' optionName='Add New Strategy' />
+                <LoginMenuItem iconName='logout' optionName='Logout' />
+            </ul>
+        </>
     );
 }
