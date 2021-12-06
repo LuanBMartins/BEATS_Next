@@ -1,6 +1,6 @@
 import { Chip } from '../Chip';
 
-export function StrategiesBox() {
+export function InfoSecAttributesBox() {
     return (
         <div
             className='border border-beatsWhite-900 rounded-xl

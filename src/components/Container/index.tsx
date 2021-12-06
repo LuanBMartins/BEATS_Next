@@ -10,7 +10,7 @@ export function Container({ children, containerClasses, containerType }: Contain
     return (
         <>
             {isContainerMainDiv ? (
-                <main className={`flex flex-col items-center justify-around ${containerClasses}`}>{children}</main>
+                <main className={`flex flex-col ${containerClasses}`}>{children}</main>
             ) : (
                 <section className={`flex flex-col items-center justify-around ${containerClasses}`}>
                     {children}

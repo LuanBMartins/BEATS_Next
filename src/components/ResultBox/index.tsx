@@ -1,5 +1,6 @@
 import { Container } from '../Container';
 import { Chip } from '../Chip';
+import { InfoSecAttributesOnSearchResult } from '../Formfields';
 
 interface attributesDataType {
     name: string;
@@ -35,11 +36,7 @@ export function ResultBox({ attributes, routingData }: resultsProps) {
                         <span className='font-bold'>Aliases: </span>
                         {attributes.eye_color}
                     </p>
-                    {/* <p className='skeleton-attribute2 bg-beatsWhite-700 h-4 w-3/5' /> */}
-                    <div className='flex  gap-2'>
-                        <Chip attributeName='Availability' iconName='info' isChipSelectable={false} />
-                        <Chip attributeName='Non-Repudiation' iconName='info' isChipSelectable={false} />
-                    </div>
+                    <InfoSecAttributesOnSearchResult />
                 </div>
             </div>
         </Container>

@@ -27,6 +27,7 @@ type GlobalContextData = {
     isSelectMenuOpen: boolean;
     hideSelectOptions: () => void;
     showSelectOptions: () => void;
+    toggleOffAllSecurityInformationAttributes: () => void;
 };
 
 export const GlobalDataContext = createContext({} as GlobalContextData);
@@ -50,11 +51,11 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
     });
     const [loginData, setLoginData] = useState({ status: 'logged-off', userType: 'visitor' } as loginData);
 
-    // useEffect(() => {
-    //     console.log(termToSearch);
-    //     console.log(searchedType);
-    //     console.log(securityInformationAttributes);
-    // }, [termToSearch, searchedType, securityInformationAttributes]);
+    useEffect(() => {
+        // console.log(termToSearch);
+        // console.log(searchedType);
+        console.log(securityInformationAttributes);
+    }, [securityInformationAttributes]);
 
     function toggleSecurityInformationAttributes(receivedAttribute: string) {
         const newState = {} as securityInformationItems;
@@ -65,6 +66,15 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
                 : (newState[key as keyof securityInformationItems] = value);
         });
 
+        setSecurityInformationAttributes(newState);
+    }
+
+    function toggleOffAllSecurityInformationAttributes() {
+        const newState = {} as securityInformationItems;
+
+        Object.keys(securityInformationAttributes).map((key) => {
+            return (newState[key as keyof securityInformationItems] = false);
+        });
         setSecurityInformationAttributes(newState);
     }
 
@@ -90,6 +100,7 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
                 setSearchedType,
                 toggleSecurityInformationAttributes,
                 setTermToSearch,
+                toggleOffAllSecurityInformationAttributes,
             }}
         >
             {children}

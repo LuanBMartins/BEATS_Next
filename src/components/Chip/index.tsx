@@ -9,8 +9,9 @@ interface ChipProps {
 }
 
 export function Chip({ iconName, attributeName, isChipSelectable }: ChipProps) {
+    const { securityInformationAttributes, toggleSecurityInformationAttributes } = useGlobalData();
+
     const [chipSelected, setChipSelected] = useState(false);
-    const { toggleSecurityInformationAttributes } = useGlobalData();
 
     const initialBorder = isChipSelectable ? 'hover:opacity-80 hover:scale-95' : 'border-beatsWhite-900';
     const [borderColor, setBorderColor] = useState(initialBorder);

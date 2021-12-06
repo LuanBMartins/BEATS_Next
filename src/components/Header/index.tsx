@@ -7,11 +7,16 @@ import { SelectMenu } from '../SelectMenu';
 import { useGlobalData } from '../../../contexts/GlobalDataContext';
 
 export function Header() {
+    const { isSelectMenuOpen, toggleOffAllSecurityInformationAttributes } = useGlobalData();
+
     const router = useRouter();
     const currentPage = router.pathname.split('/')[1];
     const isHomePage = currentPage == '' ? true : false;
-    const navigateHome = () => router.push('/');
-    const { isSelectMenuOpen } = useGlobalData();
+
+    const navigateHome = () => {
+        toggleOffAllSecurityInformationAttributes();
+        router.push('/');
+    };
 
     return (
         <header className='bg-beatsBlack-700 font-Montserrat flex justify-between h-32 py-6 px-32'>

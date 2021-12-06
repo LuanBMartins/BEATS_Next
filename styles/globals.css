@@ -23,8 +23,28 @@
     text-decoration-thickness: 0.125rem;
 }
 
+.green-underline-title {
+    text-decoration-color: #b8cf7c;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 0.5rem;
+}
+
 .max-width-033 {
     max-width: 33%;
+}
+
+.input-button {
+    display: block;
+    height: 3em;
+    width: 3em;
+    background: url('../public/upload_image.svg');
+    background-size: contain;
+    cursor: pointer;
+}
+
+.input-button:hover {
+    opacity: 0.75;
+    pointer-events: all;
 }
 
 input[type='search']::-webkit-search-cancel-button {
@@ -49,6 +69,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
         Helvetica Neue, sans-serif;
     font-size: 16px;
+    background-color: #121212; /*bg-beatsBlack-900 */
 }
 
 a {

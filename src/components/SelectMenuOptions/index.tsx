@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { securityInformationItems, useGlobalData } from '../../../contexts/GlobalDataContext';
+import { useGlobalData } from '../../../contexts/GlobalDataContext';
 
 interface SelectMenuOptionsProps {
     closingFunction: () => void;
@@ -13,15 +13,16 @@ export function SelectMenuOptions({ closingFunction }: SelectMenuOptionsProps) {
             {Object.entries(securityInformationAttributes).map(([key, value]) => {
                 // console.log(key, value);
                 return (
-                    <label htmlFor={key} key={key}>
+                    <label htmlFor={key} key={key} className='text-sm'>
                         <input
                             id={key}
                             type='checkbox'
-                            value={value}
+                            value={key}
+                            checked={value}
                             onChange={(e) => toggleSecurityInformationAttributes(key)}
-                            className='mr-2 form-checkbox text-beatsGreen-700  focus:ring-1 focus:ring-beatsGreen-700'
+                            className='mr-2 form-checkbox text-beatsGreen-700 focus:ring-1 focus:ring-beatsGreen-700'
                         />
-                        {key}
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
                     </label>
                 );
             })}

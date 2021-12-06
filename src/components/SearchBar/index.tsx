@@ -20,7 +20,7 @@ export function SearchBar({ receivedHeight }: SearchProps) {
 
     function navigateOnClick(e: any) {
         e.preventDefault();
-        termToSearch != '' ? router.push('result') : null;
+        termToSearch != '' ? router.push('search') : null;
     }
 
     return (

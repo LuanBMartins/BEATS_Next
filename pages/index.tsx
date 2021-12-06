@@ -3,18 +3,18 @@ import Head from 'next/head';
 import { Container } from '../src/components/Container';
 import { ImageContainer } from '../src/components/ImageContainer';
 import { SearchBar } from '../src/components/SearchBar';
-import { StrategiesBox } from '../src/components/StrategiesBox';
+import { InfoSecAttributesBox } from '../src/components/InfoSecAttributesBox';
 import { RadioSelector } from '../src/components/RadioSelector';
 
 const Home: NextPage = () => {
     return (
-        <div className='min-h-screen bg-beatsBlack-900 text-beatsWhite-900'>
+        <>
             <Head>
                 <title>BEATS | Home</title>
             </Head>
             <Container
                 containerType='main'
-                containerClasses={` container-height
+                containerClasses={` items-center justify-around gap-8
                                     my-20 mx-28 p-12 bg-beatsBlack-700 rounded-10px relative
                                     before:bg-before-decorator
                                     before:bg-no-repeat before:bg-cover before:bg-center
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
 
                 <RadioSelector />
 
-                <StrategiesBox />
+                <InfoSecAttributesBox />
 
                 <ImageContainer
                     vertical='bottom-6'
@@ -58,7 +58,7 @@ const Home: NextPage = () => {
                     position='absolute'
                 />
             </Container>
-        </div>
+        </>
     );
 };
 
