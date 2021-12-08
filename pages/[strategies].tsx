@@ -13,21 +13,21 @@ import { useRouter } from 'next/router';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useEffect } from 'react';
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    return {
-        paths: [],
-        fallback: true,
-    };
-};
+// export const getStaticPaths: GetStaticPaths = async () => {
+//     return {
+//         paths: [],
+//         fallback: true,
+//     };
+// };
 
-export const getStaticProps: GetStaticProps = async () => {
-    return {
-        props: {},
-        revalidate: 60 * 60 * 24, // In seconds -> Trying to regenerate the page if there's difference to the cache every access after 24h
-    };
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//     return {
+//         props: {},
+//         revalidate: 60 * 60 * 24, // In seconds -> Trying to regenerate the page if there's difference to the cache every access after 24h
+//     };
+// };
 
-export default function HomePage() {
+export default function SearchPage() {
     const route = 'people/1';
 
     const { data, error } = useFetch(route);

@@ -1,4 +1,3 @@
-import { useRef, useEffect } from 'react';
 import { useGlobalData } from '../../../contexts/GlobalDataContext';
 
 interface SelectMenuOptionsProps {

@@ -37,7 +37,7 @@ export function StrategyForm() {
                 <TextAreaFormField fieldName='References' />
 
                 <button
-                    className='h-12 w-6/12 rounded-md bg-beatsGreen-500 text-beatsWhite-900 font-bold
+                    className='h-12 w-6/12 rounded-md bg-beatsGreen-500 text-beatsWhite-full font-bold
                 transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsGreen-700 active:ring-brightness-125'
                 >
                     Register Strategy

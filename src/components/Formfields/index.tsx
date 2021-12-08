@@ -3,9 +3,10 @@ import { Chip } from '../Chip';
 
 interface fieldProps {
     fieldName: string;
+    fieldType?: string | 'text';
 }
 
-export function TextFormField({ fieldName }: fieldProps) {
+export function TextFormField({ fieldName, fieldType }: fieldProps) {
     return (
         <div className='w-full'>
             <label
@@ -14,6 +15,19 @@ export function TextFormField({ fieldName }: fieldProps) {
             >
                 {fieldName}:
             </label>
+            <input
+                type={fieldType}
+                className='bg-beatsBlack-100 h-10 w-full border border-beatsWhite-100 rounded-md px-2
+                focus:outline-none focus:border-beatsGreen-700 focus:ring-1 focus:ring-beatsGreen-700'
+            />
+        </div>
+    );
+}
+
+export function TextFormFieldNoDecorator({ fieldName }: fieldProps) {
+    return (
+        <div className='w-full'>
+            <label className='font-bold relative block mb-4'>{fieldName}:</label>
             <input
                 className='bg-beatsBlack-100 h-10 w-full border border-beatsWhite-100 rounded-md px-2
                 focus:outline-none focus:border-beatsGreen-700 focus:ring-1 focus:ring-beatsGreen-700'

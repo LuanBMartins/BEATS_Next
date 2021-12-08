@@ -23,7 +23,7 @@ export function ImageContainer({
 }: ContainerProps) {
     return (
         <div className={`${position} ${vertical} ${horizontal} ${background || ''}`}>
-            <Image src={`${localization}`} width={height} height={width} alt={alt} aria-hidden='true' />
+            <Image src={`${localization}`} width={width} height={height} alt={alt} aria-hidden='true' />
         </div>
     );
 }

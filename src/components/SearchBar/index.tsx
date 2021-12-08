@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { ImageContainer } from '../ImageContainer';
 import { useGlobalData } from '../../../contexts/GlobalDataContext';
 
@@ -7,26 +6,20 @@ type SearchProps = {
 };
 
 export function SearchBar({ receivedHeight }: SearchProps) {
-    const { termToSearch, setTermToSearch } = useGlobalData();
-
-    const router = useRouter();
+    const { termToSearch, setTermToSearch, isTermToSearchEmpty } = useGlobalData();
 
     const searchBarHeight = receivedHeight == 'large' ? 'h-12' : 'h-10 max-width-033';
     const searchIconHeight = 32;
     const textHeight = receivedHeight == 'large' ? 'h-full py-2 px-6 text-2xl' : 'h-full py-1 px-6 text-lg';
+    const buttonDisabled = isTermToSearchEmpty();
 
     // console.log(`Search bar height = ${searchBarHeight}`);
     // console.log(`Search Icon height = ${searchIconHeight}`);
 
-    function navigateOnClick(e: any) {
-        e.preventDefault();
-        termToSearch != '' ? router.push('search') : null;
-    }
-
     return (
         <div className={`search-grid rounded-r-3xl w-7/12 ${searchBarHeight}`}>
             <input
-                className={`bg-beatsGreen-100
+                className={`bg-beatsGreen-100 font-Montserrat
                 border-l border-t border-b border-beatsGreen-300 rounded-l-3xl
                 ${textHeight}
                 focus:outline-none focus:border-beatsGreen-900 focus:ring-1 focus:ring-beatsGreen-900`}
@@ -37,12 +30,11 @@ export function SearchBar({ receivedHeight }: SearchProps) {
             />
 
             <button
-                className={`border-r border-t border-b rounded-r-3xl border-beatsGreen-700
+                className='border-r border-t border-b rounded-r-3xl border-beatsGreen-700
                 bg-beatsGreen-700 transition duration-400 ease-in hover:border-beatsGreen-900 hover:bg-beatsGreen-900
-                flex justify-center items-center h-full ${
-                    termToSearch == '' ? 'cursor-not-allowed ' : 'cursor-pointer '
-                }`}
-                onClick={navigateOnClick}
+                flex justify-center items-center h-full cursor-pointer disabled:cursor-not-allowed'
+                type='submit'
+                disabled={buttonDisabled}
             >
                 <ImageContainer
                     vertical=''

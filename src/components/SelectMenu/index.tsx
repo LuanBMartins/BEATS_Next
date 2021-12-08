@@ -37,7 +37,7 @@ export function SelectMenu() {
         >
             {!isSelectMenuOpen && (
                 <>
-                    <span>Attributes</span>
+                    <span className='text-sm font-SourceSans'>Attributes</span>
                     <ImageContainer
                         vertical=''
                         horizontal=''

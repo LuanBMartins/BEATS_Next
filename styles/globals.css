@@ -8,6 +8,10 @@
     background: linear-gradient(116.43deg, rgba(255, 255, 255, 0.3) -11.75%, rgba(255, 255, 255, 0) 108.53%);
 }
 
+.faded-bg-login {
+    background: linear-gradient(97.6deg, rgba(255, 255, 255, 0.15) -4.18%, rgba(255, 255, 255, 0) 124.93%);
+}
+
 .search-grid {
     display: grid;
     grid-template-columns: 1fr 48px;
@@ -66,8 +70,8 @@ html,
 body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-        Helvetica Neue, sans-serif;
+    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+        Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     font-size: 16px;
     background-color: #121212; /*bg-beatsBlack-900 */
 }

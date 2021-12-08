@@ -13,8 +13,9 @@ const Home: NextPage = () => {
                 <title>BEATS | Home</title>
             </Head>
             <Container
-                containerType='main'
-                containerClasses={` items-center justify-around gap-8
+                containerType='form'
+                role='search'
+                containerClasses={` items-center justify-around gap-8 container-height
                                     my-20 mx-28 p-12 bg-beatsBlack-700 rounded-10px relative
                                     before:bg-before-decorator
                                     before:bg-no-repeat before:bg-cover before:bg-center

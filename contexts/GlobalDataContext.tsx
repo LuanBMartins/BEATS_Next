@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
-export interface securityInformationItems {
+interface securityInformationItems {
     confidentiality: boolean;
     integrity: boolean;
     availability: boolean;
@@ -9,6 +9,8 @@ export interface securityInformationItems {
     accountability: boolean;
     'non-repudiation': boolean;
 }
+
+export type StringKeys = keyof securityInformationItems & string;
 
 interface loginData {
     status: 'logged-in' | 'logged-off';
@@ -28,6 +30,9 @@ type GlobalContextData = {
     hideSelectOptions: () => void;
     showSelectOptions: () => void;
     toggleOffAllSecurityInformationAttributes: () => void;
+    generateRoute: () => string;
+    resetFormData: () => void;
+    isTermToSearchEmpty: () => boolean;
 };
 
 export const GlobalDataContext = createContext({} as GlobalContextData);
@@ -51,11 +56,13 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
     });
     const [loginData, setLoginData] = useState({ status: 'logged-off', userType: 'visitor' } as loginData);
 
-    useEffect(() => {
-        // console.log(termToSearch);
-        // console.log(searchedType);
-        console.log(securityInformationAttributes);
-    }, [securityInformationAttributes]);
+    // useEffect(() => {
+    //     console.log(termToSearch);
+    // console.log(searchedType);
+    // console.log(securityInformationAttributes);
+    // }, [securityInformationAttributes]);
+    // }, [searchedType]);
+    // }, [termToSearch]);
 
     function toggleSecurityInformationAttributes(receivedAttribute: string) {
         const newState = {} as securityInformationItems;
@@ -86,6 +93,56 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         setIsSelectMenuOpen(false);
     }
 
+    function generateRoute(): string {
+        // Any amount of whitespace is replaced by '+'. And if there are spaces in the first or the last portion of the query
+        // It is swapped by '' in order not to send a query starting or ending with '+'
+        const strategyNameForURL = termToSearch.replaceAll(/\s+/g, '+').replace(/[+]$/g, '').replace(/^[+]/g, '');
+
+        const typeForURL = searchedType;
+
+        // Converting the keys of the attributes marked as true to a string concateneted with '+'
+        const secInfoAttributesMarked = Object.entries(securityInformationAttributes).map(([key, value]) => {
+            return value == true ? key : ''; // making an array with the keys that were selected
+        });
+        const secInfoAttributesForURL = secInfoAttributesMarked.reduce((previous, current) => {
+            return current != '' ? previous + `${current} ` : previous + '';
+        }, '');
+
+        // console.log(secInfoAttributesForURL.length);
+
+        const areAllAttributesFalse = allAttributesFalse();
+        const URLtoSearch = `strategies?name=${strategyNameForURL}&type=${typeForURL}${
+            areAllAttributesFalse ? '' : `&attr=${secInfoAttributesForURL.replace(/[\s](?!$)/g, '+')}`
+        }`;
+
+        // console.log(URLtoSearch);
+        return URLtoSearch;
+    }
+
+    function resetFormData() {
+        setTermToSearch('');
+        toggleOffAllSecurityInformationAttributes();
+        setSearchedType('tactic');
+    }
+
+    function isTermToSearchEmpty() {
+        // console.log(termToSearch);
+        // console.log(termToSearch.match(/^\s+$/) !== null);
+        // console.log(termToSearch == '');
+        return !termToSearch || termToSearch === '' || termToSearch.match(/^\s+$/) !== null ? true : false;
+        // return false;
+    }
+
+    function allAttributesFalse() {
+        let result = true;
+
+        Object.values(securityInformationAttributes).forEach((value) => {
+            value == true ? (result = false) : null;
+        });
+
+        return result;
+    }
+
     return (
         <GlobalDataContext.Provider
             value={{
@@ -101,6 +158,9 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
                 toggleSecurityInformationAttributes,
                 setTermToSearch,
                 toggleOffAllSecurityInformationAttributes,
+                generateRoute,
+                resetFormData,
+                isTermToSearchEmpty,
             }}
         >
             {children}
