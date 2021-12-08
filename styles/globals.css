@@ -41,7 +41,7 @@
     display: block;
     height: 3em;
     width: 3em;
-    background: url('../public/upload_image.svg');
+    background: url('/upload_image.svg');
     background-size: contain;
     cursor: pointer;
 }
@@ -57,7 +57,7 @@ input[type='search']::-webkit-search-cancel-button {
     /* height: 28px; */
     height: 1em;
     width: 1em;
-    background: url('../public/clear_button.png');
+    background: url('/clear_button.png');
     background-size: contain;
 }
 
