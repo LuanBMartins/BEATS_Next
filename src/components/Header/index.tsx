@@ -14,7 +14,6 @@ export function Header() {
     const isHomePage = currentPage == '' ? true : false;
 
     const navigateHome = () => {
-        resetFormData();
         router.push('/');
     };
 

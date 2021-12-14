@@ -32,7 +32,11 @@ export function Chip({ iconName, attributeName, isChipSelectable }: ChipProps) {
     }, [chipSelected, isChipSelectable]);
 
     function alterSelectedState() {
-        isChipSelectable ? (setChipSelected(!chipSelected), toggleSecurityInformationAttributes(attributeName)) : null;
+        const nameInGlobalDataFormat = attributeName.charAt(0).toLowerCase() + attributeName.slice(1);
+        // console.log(nameInGlobalDataFormat);
+        isChipSelectable
+            ? (setChipSelected(!chipSelected), toggleSecurityInformationAttributes(nameInGlobalDataFormat))
+            : null;
     }
 
     return (
@@ -48,7 +52,7 @@ export function Chip({ iconName, attributeName, isChipSelectable }: ChipProps) {
                 aria-hidden='true'
                 className='mx-1'
             />
-            <p className='mx-1.5 text-sm font-SourceSans'>{attributeName}</p>
+            <span className='mx-1.5 text-sm font-SourceSans'>{attributeName}</span>
         </div>
     );
 }

@@ -17,6 +17,7 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
             (optionName == 'Sign Up' && 'signup') ||
             (optionName == 'Request New Strategy' && 'register-strategy') ||
             (optionName == 'Add New Strategy' && 'register-strategy') ||
+            (optionName == 'About Us' && 'about') ||
             '404';
 
         if (optionName == 'Request New Strategy' || 'Add New Strategy') toggleOffAttributes();
@@ -26,7 +27,7 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
 
     return (
         <li
-            className='flex items-center mb-2 w-max hover:border-l-2 hover:border-beatsWhite-900 hover:cursor-pointer hover:pl-1'
+            className='flex items-center ml-2 mb-2 w-max hover:border-l-2 hover:border-beatsWhite-900 hover:cursor-pointer hover:pl-1'
             onClick={navigateOnClick}
         >
             <Image src={`/Material Icons/${iconName}.svg`} width={18} height={18} alt='' aria-hidden='true' />

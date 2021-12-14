@@ -7,10 +7,22 @@ interface securityInformationItems {
     authentication: boolean;
     authorization: boolean;
     accountability: boolean;
-    'non-repudiation': boolean;
+    'non-Repudiation': boolean;
 }
 
-export type StringKeys = keyof securityInformationItems & string;
+interface securityInitialsObjectType {
+    [key: string]: string;
+}
+
+export const securityInformationItemsInitials: securityInitialsObjectType = {
+    confidentiality: 'c',
+    integrity: 'i',
+    availability: 'a',
+    authentication: 'authn',
+    authorization: 'authz',
+    accountability: 'acc',
+    'non-Repudiation': 'nr',
+};
 
 interface loginData {
     status: 'logged-in' | 'logged-off';
@@ -52,7 +64,7 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         authentication: false,
         authorization: false,
         accountability: false,
-        'non-repudiation': false,
+        'non-Repudiation': false,
     });
     const [loginData, setLoginData] = useState({ status: 'logged-off', userType: 'visitor' } as loginData);
 
@@ -63,12 +75,13 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
     // }, [securityInformationAttributes]);
     // }, [searchedType]);
     // }, [termToSearch]);
+    // }, [termToSearch]);
 
     function toggleSecurityInformationAttributes(receivedAttribute: string) {
         const newState = {} as securityInformationItems;
 
         Object.entries(securityInformationAttributes).map(([key, value]) => {
-            return receivedAttribute.toLocaleLowerCase() == key
+            return receivedAttribute == key
                 ? (newState[key as keyof securityInformationItems] = !value)
                 : (newState[key as keyof securityInformationItems] = value);
         });
@@ -105,7 +118,7 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
             return value == true ? key : ''; // making an array with the keys that were selected
         });
         const secInfoAttributesForURL = secInfoAttributesMarked.reduce((previous, current) => {
-            return current != '' ? previous + `${current} ` : previous + '';
+            return current != '' ? previous + `${securityInformationItemsInitials[current]} ` : previous + '';
         }, '');
 
         // console.log(secInfoAttributesForURL.length);

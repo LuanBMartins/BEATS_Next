@@ -5,8 +5,17 @@ import { ImageContainer } from '../src/components/ImageContainer';
 import { SearchBar } from '../src/components/SearchBar';
 import { InfoSecAttributesBox } from '../src/components/InfoSecAttributesBox';
 import { RadioSelector } from '../src/components/RadioSelector';
+import { useEffect } from 'react';
+import { useGlobalData } from '../contexts/GlobalDataContext';
 
 const Home: NextPage = () => {
+    const { resetFormData } = useGlobalData();
+
+    useEffect(() => {
+        resetFormData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
             <Head>

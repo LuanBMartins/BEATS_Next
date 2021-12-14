@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { StrategyForm } from '../src/components/StrategyForm';
 
-export default function strategy() {
+export default function RegisterStrategyPage() {
     return (
         <>
             <Head>

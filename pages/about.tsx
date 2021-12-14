@@ -57,7 +57,7 @@ export default function AboutPage() {
                         </div>
                     </div>
                     <div className='w-2/4 flex justify-center py-16 px-8'>
-                        <p className='font-Montserrat text-2xl text-bold'>Here would go some description</p>
+                        <p className='font-Montserrat text-2xl font-bold'>Here would go some description</p>
                     </div>
                 </div>
             </Container>

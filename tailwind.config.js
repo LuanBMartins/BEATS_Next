@@ -49,8 +49,8 @@ module.exports = {
             },
 
             backgroundImage: {
-                'before-decorator': "url('../public/before.svg')",
-                'after-decorator': "url('../public/after.svg')",
+                'before-decorator': "url('/before.svg')",
+                'after-decorator': "url('/after.svg')",
             },
             transitionDuration: {
                 400: '400ms',

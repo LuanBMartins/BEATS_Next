@@ -5,10 +5,12 @@ https://swr.vercel.app/
 https://nextjs.org/docs/basic-features/data-fetching#fetching-data-on-the-client-side
 */
 import Head from 'next/head';
-import { Skeleton } from '../src/components/Skeleton';
-import { ResultBox } from '../src/components/ResultBox';
-import { useFetch } from '../src/hooks/useFetch';
-import { useGlobalData } from '../contexts/GlobalDataContext';
+import { Skeleton } from '../../src/components/Skeleton';
+import { Container } from '../../src/components/Container';
+import { ResultBox } from '../../src/components/ResultBox';
+import { useFetch } from '../../src/hooks/useFetch';
+import { resultsItemProps } from '../../src/components/ResultBox';
+import { useGlobalData } from '../../contexts/GlobalDataContext';
 import { useRouter } from 'next/router';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useEffect } from 'react';
@@ -27,13 +29,19 @@ import { useEffect } from 'react';
 //     };
 // };
 
-export default function SearchPage() {
-    const route = 'people/1';
+interface SearchResultType {
+    strategies: resultsItemProps[];
+}
 
+export default function SearchPage() {
+    const router = useRouter();
+
+    // Splitting the mounted URL, taking off the / character to get just the query to send to the API
+    const route = router.asPath.split('/')[1];
     const { data, error } = useFetch(route);
 
-    const router = useRouter();
     const queryData = router.query;
+    // console.log(data.strategies.length);
 
     const { termToSearch, setTermToSearch, securityInformationAttributes } = useGlobalData();
     // console.log(queryData.a);
@@ -55,13 +63,34 @@ export default function SearchPage() {
             </>
         );
     }
+    /*
+    If the page is accessed directly through the URL, not coming from the home page
+    there is achance that the parameters were read and:
+    - The page accessed isnt strategies;
+    - There is no name parameter (meaning that is an invalid search)
+    In these cases redirect to the home page
+    */
+    if (router.query) {
+        if (router.query.strategies != 'strategies' || !router.query.name) router.replace('/');
+    }
 
     return (
         <>
             <Head>
                 <title>BEATS | Result</title>
             </Head>
-            <ResultBox attributes={data} routingData={queryData} />
+            {data.strategies.length > 0 ? (
+                data.strategies.map((resultItem: resultsItemProps) => {
+                    return <ResultBox key={resultItem.name} strategy={resultItem} />;
+                })
+            ) : (
+                <Container
+                    containerType='section'
+                    containerClasses='my-20 mx-32 p-12 bg-beatsBlack-700 rounded-10px container-height'
+                >
+                    <h1 className='font-Montserrat text-2xl text-center'>No strategies were found</h1>
+                </Container>
+            )}
         </>
     );
 }

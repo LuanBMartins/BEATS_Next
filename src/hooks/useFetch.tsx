@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import axios from 'axios';
 
 function timeout(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -22,28 +23,36 @@ type APIDataType = {
     data: strategyType;
 };
 
-const APIDataMocked = {
-    aliases: 'test123',
-    type: 'test123',
-    infoSecAttributes: 'test123',
-    problem: 'test123',
-    context: 'test123',
-    solution: 'test123',
-    rationale: 'test123',
-    consequences: 'test123',
-    examples: 'test123',
-    relatedPatterns: 'test123',
-    references: 'test123',
-};
+// export const useFetch = (receivedURL: string) => {
+//     const baseURL = 'https://swapi.dev/api/';
+//     const finalURL = baseURL + receivedURL;
+
+//     const { data, error } = useSWR(finalURL, async (finalURL) => {
+//         await timeout(2000);
+//         const response = await fetch(finalURL);
+//         const data = await response.json();
+
+//         return data;
+//     });
+
+//     return { data, error };
+//     // const { data } = useSWR('api', async () => {
+//     //     await timeout(2000);
+//     //     return APIDataMocked;
+//     // }) as APIDataType;
+
+//     // return data;
+// };
 
 export const useFetch = (receivedURL: string) => {
-    const baseURL = 'https://swapi.dev/api/';
-    const finalURL = baseURL + receivedURL;
+    const api = axios.create({
+        baseURL: 'https://04cb-187-56-63-252.ngrok.io/',
+    });
+    // const finalURL = baseURL + receivedURL;
 
-    const { data, error } = useSWR(finalURL, async (finalURL) => {
-        await timeout(2000);
-        const response = await fetch(finalURL);
-        const data = await response.json();
+    const { data, error } = useSWR(receivedURL, async (receivedURL) => {
+        const response = await api.get(receivedURL);
+        const data = response.data;
 
         return data;
     });
