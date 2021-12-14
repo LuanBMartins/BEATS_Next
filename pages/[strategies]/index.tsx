@@ -41,7 +41,7 @@ export default function SearchPage() {
     const { data, error } = useFetch(route);
 
     const queryData = router.query;
-    // console.log(data.strategies.length);
+    console.log(data);
 
     const { termToSearch, setTermToSearch, securityInformationAttributes } = useGlobalData();
     // console.log(queryData.a);
@@ -85,7 +85,7 @@ export default function SearchPage() {
                 })
             ) : (
                 <Container
-                    containerType='section'
+                    containerType='main'
                     containerClasses='my-20 mx-32 p-12 bg-beatsBlack-700 rounded-10px container-height'
                 >
                     <h1 className='font-Montserrat text-2xl text-center'>No strategies were found</h1>

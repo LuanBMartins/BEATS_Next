@@ -46,7 +46,7 @@ type APIDataType = {
 
 export const useFetch = (receivedURL: string) => {
     const api = axios.create({
-        baseURL: 'https://04cb-187-56-63-252.ngrok.io/',
+        baseURL: 'https://d215-189-19-117-246.ngrok.io/',
     });
     // const finalURL = baseURL + receivedURL;
 

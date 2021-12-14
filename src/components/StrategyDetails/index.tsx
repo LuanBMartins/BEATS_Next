@@ -1,18 +1,50 @@
 import { useEffect, useState } from 'react';
 import { Commentaries } from '../../components/Commentaries';
-import { InfoSecAttributesBox, ImageFormField, TextAreaFormField, TextFormField } from '../Formfields';
+import { InfoSecAttributesOnSearchResult, ImageFormField, TextAreaFormField, TextFormField } from '../Formfields';
 
-export function StrategyDetails() {
-    const [strategyName, setStrategyName] = useState('');
-    const [aliases, setAliases] = useState('');
-    const [problem, setProblem] = useState('');
-    const [forces, setForces] = useState('');
-    const [images, setImages] = useState([] as Array<File>);
-    const [solution, setSolution] = useState('');
-    const [rationale, setRationale] = useState('');
-    const [consequences, setConsequences] = useState('');
-    const [examples, setExamples] = useState('');
-    const [relatedPatterns, setRelatedPatterns] = useState('');
+interface dataRetrievedType {
+    a: boolean;
+    acc: boolean;
+    aliases: Array<string>;
+    authn: boolean;
+    authz: boolean;
+    c: boolean;
+    'complementary references': string;
+    consequences: string;
+    context: string;
+    examples: string;
+    forces: string;
+    i: false;
+    name: string;
+    nr: false;
+    problem: string;
+    publish_date: Date;
+    rationale: string;
+    'related strategies': string;
+    solution: string;
+    type: string;
+    username_creator: string;
+}
+
+interface strategyDataProp {
+    strategyData: dataRetrievedType;
+    commentaries: any;
+}
+export function StrategyDetails({ strategyData, commentaries }: strategyDataProp) {
+    const { a, acc, aliases, authn, authz, c, i, nr } = strategyData;
+    const attributesObject = { a, acc, authn, authz, c, i, nr };
+    const formatedDate = new Date(strategyData.publish_date).toLocaleString('en-US');
+
+    // const [strategyName, setStrategyName] = useState('');
+    // const [aliases, setAliases] = useState('');
+    // const [problem, setProblem] = useState('');
+    // const [forces, setForces] = useState('');
+    // const [images, setImages] = useState([] as Array<File>);
+    // const [solution, setSolution] = useState('');
+    // const [rationale, setRationale] = useState('');
+    // const [consequences, setConsequences] = useState('');
+    // const [examples, setExamples] = useState('');
+    // const [relatedPatterns, setRelatedPatterns] = useState('');
     const [references, setReferences] = useState('');
 
     return (
@@ -20,31 +52,53 @@ export function StrategyDetails() {
             <main className='my-20 mx-32 p-16 bg-beatsBlack-700 rounded-10px grid grid-cols-4 gap-16'>
                 <div className='flex flex-col gap-8 justify-between col-span-3'>
                     <h1 className='font-Montserrat text-4xl text-left underline green-underline-title mb-12'>
-                        Name Received as Parameter
+                        {strategyData.name}
                     </h1>
-                    <TextFormField fieldName='Strategy Name' fieldValue={strategyName} />
 
-                    <TextFormField fieldName='Aliases' fieldValue={aliases} />
+                    <p
+                        className='font-bold relative block mb-4 ml-4
+                before:absolute before:bg-beatsGreen-700 before:h-2 before:w-2 before:block before:top-2 before:-left-4 before:rounded-md'
+                    >
+                        Aliases:{'  '}
+                        {aliases.map((alias: string) => {
+                            return (
+                                <span key={alias} className='text-base font-SourceSans italic font-normal'>
+                                    {alias}{' '}
+                                </span>
+                            );
+                        })}
+                    </p>
 
-                    <InfoSecAttributesBox fieldName='InfoSec Attributes' />
+                    <InfoSecAttributesOnSearchResult
+                        fieldName='Attributes'
+                        searchResultAttributesObject={attributesObject}
+                    />
 
-                    <TextAreaFormField fieldName='Problem' fieldValue={problem} />
+                    <TextAreaFormField disabled={true} fieldName='Problem' fieldValue={strategyData.problem} />
 
-                    <TextAreaFormField fieldName='Forces' fieldValue={forces} />
+                    <TextAreaFormField disabled={true} fieldName='Forces' fieldValue={strategyData.forces} />
 
-                    <TextAreaFormField fieldName='Solution' fieldValue={solution} />
+                    <TextAreaFormField disabled={true} fieldName='Solution' fieldValue={strategyData.solution} />
 
-                    <ImageFormField fieldName='Optional - upload 1 or more images that show your solution' />
+                    {/* <ImageFormField fieldName='Optional - upload 1 or more images that show your solution' /> */}
 
-                    <TextFormField fieldName='Rationale' fieldValue={rationale} />
+                    <TextFormField disabled={true} fieldName='Rationale' fieldValue={strategyData.rationale} />
 
-                    <TextAreaFormField fieldName='Consequences' fieldValue={consequences} />
+                    <TextAreaFormField
+                        disabled={true}
+                        fieldName='Consequences'
+                        fieldValue={strategyData.consequences}
+                    />
 
-                    <TextAreaFormField fieldName='Examples' fieldValue={examples} />
+                    <TextAreaFormField disabled={true} fieldName='Examples' fieldValue={strategyData.examples} />
 
-                    <TextFormField fieldName='Related Patterns' fieldValue={relatedPatterns} />
+                    <TextFormField
+                        disabled={true}
+                        fieldName='Related Patterns'
+                        fieldValue={strategyData['related strategies']}
+                    />
 
-                    <TextAreaFormField fieldName='References' fieldValue={references} />
+                    <TextAreaFormField disabled={true} fieldName='References' fieldValue={references} />
                 </div>
                 <div className='border border-beatsGreen-700 rounded-10px p-6 col-start-4 col-span-1 h-60'>
                     <button
@@ -56,15 +110,16 @@ export function StrategyDetails() {
                     </button>
                     <div className='mb-4'>
                         <p className='font-bold'>Author:</p>
-                        <p className=''>AuthorReceived</p>
+                        <p className=''>{strategyData.username_creator}</p>
                     </div>
                     <div>
                         <p className='font-bold'>Published on:</p>
-                        <p className=''>DateReceived</p>
+                        <p className=''>{formatedDate}</p>
                     </div>
                 </div>
             </main>
-            <Commentaries />
+
+            <Commentaries commentaries={commentaries} />
         </>
     );
 }

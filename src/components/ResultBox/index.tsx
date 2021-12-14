@@ -1,6 +1,7 @@
 import { Container } from '../Container';
 import { Chip } from '../Chip';
 import { InfoSecAttributesOnSearchResult } from '../Formfields';
+import { useRouter } from 'next/router';
 
 export interface resultsItemProps {
     a: boolean;
@@ -19,14 +20,21 @@ interface routingDataProps {
     strategy: resultsItemProps;
 }
 export function ResultBox({ strategy }: routingDataProps) {
-    // console.log(routingData);
+    const router = useRouter();
+
     const { a, acc, aliases, authn, authz, c, i, name, nr, type } = strategy;
     const attributesObject = { a, acc, authn, authz, c, i, nr };
+
+    function click() {
+        router.push(`/strategies/${name}`);
+    }
+    // console.log(currentURL);
 
     return (
         <Container
             containerType='section'
             containerClasses='my-20 mx-32 p-12 bg-beatsBlack-700 rounded-10px relative overflow-hidden'
+            onClickFunction={click}
         >
             <div
                 className='skeleton-item
@@ -50,10 +58,7 @@ export function ResultBox({ strategy }: routingDataProps) {
                             );
                         })}
                     </p>
-                    <InfoSecAttributesOnSearchResult
-                        fieldName='Attributes'
-                        searchResultAttributesObject={attributesObject}
-                    />
+                    <InfoSecAttributesOnSearchResult fieldName='A' searchResultAttributesObject={attributesObject} />
                 </div>
             </div>
         </Container>

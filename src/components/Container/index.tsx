@@ -6,9 +6,10 @@ type ContainerProps = {
     containerClasses?: string;
     containerType: string;
     role?: string;
+    onClickFunction?: () => void;
 };
 
-export function Container({ children, containerClasses, containerType, role }: ContainerProps) {
+export function Container({ children, containerClasses, containerType, role, onClickFunction }: ContainerProps) {
     const { generateRoute, isTermToSearchEmpty } = useGlobalData();
     const router = useRouter();
 
@@ -29,7 +30,10 @@ export function Container({ children, containerClasses, containerType, role }: C
         <>
             {(containerType == 'main' && <main className={`flex flex-col ${containerClasses}`}>{children}</main>) ||
                 (containerType == 'section' && (
-                    <section className={`flex flex-col items-center justify-around ${containerClasses}`}>
+                    <section
+                        onClick={onClickFunction}
+                        className={`flex flex-col items-center justify-around ${containerClasses} hover:cursor-pointer`}
+                    >
                         {children}
                     </section>
                 )) ||

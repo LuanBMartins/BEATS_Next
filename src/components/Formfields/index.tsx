@@ -12,9 +12,18 @@ interface fieldProps {
     settingFunction?: Dispatch<SetStateAction<any>>;
     isRequired?: boolean;
     searchResultAttributesObject?: any;
+    disabled?: boolean | false;
 }
 
-export function TextFormField({ fieldName, fieldType, name, settingFunction, fieldValue, isRequired }: fieldProps) {
+export function TextFormField({
+    fieldName,
+    fieldType,
+    name,
+    settingFunction,
+    fieldValue,
+    isRequired,
+    disabled,
+}: fieldProps) {
     const handle = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
 
@@ -37,6 +46,7 @@ export function TextFormField({ fieldName, fieldType, name, settingFunction, fie
                 required={isRequired}
                 className='bg-beatsBlack-100 h-10 w-full border border-beatsWhite-100 rounded-md px-2
                 focus:outline-none focus:border-beatsGreen-700 focus:ring-1 focus:ring-beatsGreen-700'
+                disabled={disabled}
             />
         </div>
     );
@@ -153,7 +163,7 @@ export function TextFormFieldNoDecorator({ fieldName }: fieldProps) {
     );
 }
 
-export function TextAreaFormField({ fieldName, name, settingFunction, fieldValue }: fieldProps) {
+export function TextAreaFormField({ fieldName, name, settingFunction, fieldValue, disabled }: fieldProps) {
     const handle = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value;
 
@@ -175,6 +185,7 @@ export function TextAreaFormField({ fieldName, name, settingFunction, fieldValue
                 className='bg-beatsBlack-100 w-full border border-beatsWhite-100 rounded-md px-2
                 focus:outline-none focus:border-beatsGreen-700 focus:ring-1 focus:ring-beatsGreen-700'
                 rows={5}
+                disabled={disabled}
             />
         </div>
     );
@@ -272,7 +283,7 @@ export function InfoSecAttributesBox({ fieldName }: fieldProps) {
     );
 }
 
-export function InfoSecAttributesOnSearchResult({ searchResultAttributesObject }: fieldProps) {
+export function InfoSecAttributesOnSearchResult({ searchResultAttributesObject, fieldName }: fieldProps) {
     function returnAttributeName(receivedKey: string) {
         let name = '';
 
@@ -287,13 +298,28 @@ export function InfoSecAttributesOnSearchResult({ searchResultAttributesObject }
     }
 
     return (
-        <div className='flex gap-2'>
-            {searchResultAttributesObject &&
-                Object.entries(searchResultAttributesObject).map(([key, value]) => {
-                    return value ? (
-                        <Chip attributeName={returnAttributeName(key)} iconName='info' isChipSelectable={false} />
-                    ) : null;
-                })}
+        <div>
+            {fieldName == 'Attributes' ? (
+                <label
+                    className='font-bold relative block mb-4 ml-4
+                before:absolute before:bg-beatsGreen-700 before:h-2 before:w-2 before:block before:top-2 before:-left-4 before:rounded-md'
+                >
+                    {fieldName}:
+                </label>
+            ) : null}
+            <div className='flex gap-2'>
+                {searchResultAttributesObject &&
+                    Object.entries(searchResultAttributesObject).map(([key, value]) => {
+                        return value ? (
+                            <Chip
+                                attributeName={returnAttributeName(key)}
+                                iconName='info'
+                                key={key}
+                                isChipSelectable={false}
+                            />
+                        ) : null;
+                    })}
+            </div>
         </div>
     );
 }

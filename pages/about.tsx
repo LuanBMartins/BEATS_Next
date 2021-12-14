@@ -9,7 +9,7 @@ export default function AboutPage() {
                 <title>BEATS | About Us</title>
             </Head>
             <Container
-                containerType='section'
+                containerType='main'
                 containerClasses='my-20 mx-32 p-12 bg-beatsBlack-700 rounded-10px relative gap-16
                 after:bg-after-decorator
                 after:bg-no-repeat after:bg-cover after:bg-center
