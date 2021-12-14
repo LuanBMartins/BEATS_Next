@@ -11,7 +11,7 @@ export function SearchBar({ receivedHeight }: SearchProps) {
     const searchBarHeight = receivedHeight == 'large' ? 'h-12' : 'h-10 max-width-033';
     const searchIconHeight = 32;
     const textHeight = receivedHeight == 'large' ? 'h-full py-2 px-6 text-2xl' : 'h-full py-1 px-6 text-lg';
-    const buttonDisabled = isTermToSearchEmpty();
+    // const buttonDisabled = isTermToSearchEmpty();
 
     // console.log(`Search bar height = ${searchBarHeight}`);
     // console.log(`Search Icon height = ${searchIconHeight}`);
@@ -34,7 +34,7 @@ export function SearchBar({ receivedHeight }: SearchProps) {
                 bg-beatsGreen-700 transition duration-400 ease-in hover:border-beatsGreen-900 hover:bg-beatsGreen-900
                 flex justify-center items-center h-full cursor-pointer disabled:cursor-not-allowed'
                 type='submit'
-                disabled={buttonDisabled}
+                // disabled={buttonDisabled}
             >
                 <ImageContainer
                     vertical=''

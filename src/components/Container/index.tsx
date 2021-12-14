@@ -18,12 +18,12 @@ export function Container({ children, containerClasses, containerType, role, onC
 
         // console.log('alo porra');
         // console.log(isTermToSearchEmpty());
-        if (isTermToSearchEmpty() == false) {
-            const URLtoSearch = generateRoute();
+        // if (isTermToSearchEmpty() == false) {
+        const URLtoSearch = generateRoute();
 
-            // console.log(URLtoSearch);
-            router.push(URLtoSearch);
-        }
+        // console.log(URLtoSearch);
+        router.push(URLtoSearch);
+        // }
     }
 
     return (

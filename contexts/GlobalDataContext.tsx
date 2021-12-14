@@ -109,7 +109,10 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
     function generateRoute(): string {
         // Any amount of whitespace is replaced by '+'. And if there are spaces in the first or the last portion of the query
         // It is swapped by '' in order not to send a query starting or ending with '+'
-        const strategyNameForURL = termToSearch.replaceAll(/\s+/g, '+').replace(/[+]$/g, '').replace(/^[+]/g, '');
+        const strategyNameWithNoSpacesForURL = termToSearch
+            .replaceAll(/\s+/g, '+')
+            .replace(/[+]$/g, '')
+            .replace(/^[+]/g, '');
 
         const typeForURL = searchedType;
 
@@ -117,17 +120,20 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         const secInfoAttributesMarked = Object.entries(securityInformationAttributes).map(([key, value]) => {
             return value == true ? key : ''; // making an array with the keys that were selected
         });
-        const secInfoAttributesForURL = secInfoAttributesMarked.reduce((previous, current) => {
-            return current != '' ? previous + `${securityInformationItemsInitials[current]} ` : previous + '';
+        // console.log(secInfoAttributesMarked);
+        const secInfoAttributesPresentInURL = secInfoAttributesMarked.reduce((previous, current) => {
+            return current != '' ? previous + `&attr=${securityInformationItemsInitials[current]} ` : previous + '';
         }, '');
-
-        // console.log(secInfoAttributesForURL.length);
-
         const areAllAttributesFalse = allAttributesFalse();
-        const URLtoSearch = `strategies?name=${strategyNameForURL}&type=${typeForURL}${
-            areAllAttributesFalse ? '' : `&attr=${secInfoAttributesForURL.replace(/[\s](?!$)/g, '+')}`
-        }`;
+        const secInfoAttributesForURL = areAllAttributesFalse
+            ? ''
+            : `${secInfoAttributesPresentInURL.replace(/[\s](?!$)/g, '')}`;
+        // console.log(secInfoAttributesForURL);
 
+        const strategyNameForURL =
+            strategyNameWithNoSpacesForURL.length != 0 ? `name=${strategyNameWithNoSpacesForURL}&` : '';
+
+        const URLtoSearch = `strategies?${strategyNameForURL}type=${typeForURL}${secInfoAttributesForURL}`;
         // console.log(URLtoSearch);
         return URLtoSearch;
     }

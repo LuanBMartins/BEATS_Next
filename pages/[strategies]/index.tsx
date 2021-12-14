@@ -46,13 +46,6 @@ export default function SearchPage() {
     const { termToSearch, setTermToSearch, securityInformationAttributes } = useGlobalData();
     // console.log(queryData.a);
 
-    // This effect covers the case where the page was accessed through inserting the URL and not by using the website search
-    useEffect(() => {
-        if (!router.isReady) return;
-
-        termToSearch == '' && queryData ? setTermToSearch(queryData.a! as string) : '';
-    }, [router.isReady, queryData, setTermToSearch, termToSearch]);
-
     if (router.isFallback || !data) {
         return (
             <>
@@ -71,7 +64,7 @@ export default function SearchPage() {
     In these cases redirect to the home page
     */
     if (router.query) {
-        if (router.query.strategies != 'strategies' || !router.query.name) router.replace('/');
+        if (router.query.strategies != 'strategies') router.replace('/');
     }
 
     return (
@@ -88,7 +81,7 @@ export default function SearchPage() {
                     containerType='main'
                     containerClasses='my-20 mx-32 p-12 bg-beatsBlack-700 rounded-10px container-height'
                 >
-                    <h1 className='font-Montserrat text-2xl text-center'>No strategies were found</h1>
+                    <h1 className='mt-8 font-Montserrat text-2xl text-center'>No strategies were found</h1>
                 </Container>
             )}
         </>
