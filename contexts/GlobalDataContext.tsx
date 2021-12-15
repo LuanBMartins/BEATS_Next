@@ -26,7 +26,9 @@ export const securityInformationItemsInitials: securityInitialsObjectType = {
 
 interface loginData {
     status: 'logged-in' | 'logged-off';
-    userType: 'visitor' | 'standardUser' | 'council' | 'administrator';
+    userType: 'Visitor' | 'Regular User' | 'Council Member' | 'Administrator';
+    token: string;
+    username: string;
 }
 
 type GlobalContextData = {
@@ -66,7 +68,12 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         accountability: false,
         'non-Repudiation': false,
     });
-    const [loginData, setLoginData] = useState({ status: 'logged-off', userType: 'visitor' } as loginData);
+    const [loginData, setLoginData] = useState({
+        status: 'logged-off',
+        userType: 'Visitor',
+        token: '',
+        username: '',
+    } as loginData);
 
     // useEffect(() => {
     //     console.log(termToSearch);

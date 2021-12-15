@@ -2,8 +2,56 @@ import Head from 'next/head';
 import { Container } from '../src/components/Container';
 import { ImageContainer } from '../src/components/ImageContainer';
 import { TextFormFieldNoDecorator } from '../src/components/Formfields';
+import { useState } from 'react';
+import axios from 'axios';
+import { urlApi } from '../src/hooks/environments';
+import { useGlobalData } from '../contexts/GlobalDataContext';
+import { useRouter } from 'next/router';
+
+interface dataFromAPIType {
+    access_token: string;
+    message: string;
+    user_type: 'Visitor' | 'Regular User' | 'Council Member' | 'Administrator';
+    username: string;
+}
 
 export default function SignUpPage() {
+    const [username, setFullname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [github, setGithub] = useState('');
+
+    const router = useRouter();
+
+    const { setLoginData } = useGlobalData();
+
+    function sendDataOnClick(e: any) {
+        e.preventDefault();
+        const dataToSend = { username, email, password, github };
+        const headers = {
+            'content-type': 'application/json',
+        };
+        console.log({ ...dataToSend });
+        const finalURL = `${urlApi}/register`;
+
+        console.log(dataToSend, headers, finalURL);
+        axios
+            .post(finalURL, dataToSend, { headers })
+            .then((dataReceivedFromAPI) => {
+                const rawData: dataFromAPIType = dataReceivedFromAPI.data;
+                console.log(dataReceivedFromAPI);
+                setLoginData({
+                    status: 'logged-in',
+                    token: rawData.access_token,
+                    userType: rawData.user_type,
+                    username: rawData.username,
+                });
+                router.push('/');
+            })
+            .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
+        router.push('/signup');
+    }
+
     return (
         <>
             <Head>
@@ -41,33 +89,36 @@ export default function SignUpPage() {
                 <h1 className='font-Montserrat text-4xl'>Sign Up</h1>
 
                 <div className='w-2/5 flex flex-col gap-8 justify-between mb-10'>
-                    <TextFormFieldNoDecorator fieldName='Full Name' />
-                    <TextFormFieldNoDecorator fieldName='E-mail' />
-                    <TextFormFieldNoDecorator fieldName='Password' />
+                    <TextFormFieldNoDecorator
+                        fieldName='Full Name'
+                        fieldValue={username}
+                        settingFunction={setFullname}
+                    />
+                    <TextFormFieldNoDecorator
+                        fieldName='E-mail'
+                        fieldType='email'
+                        fieldValue={email}
+                        settingFunction={setEmail}
+                    />
+                    <TextFormFieldNoDecorator
+                        fieldValue={password}
+                        settingFunction={setPassword}
+                        fieldName='Password (Should contain exactly 12 characters)'
+                    />
+                    <TextFormFieldNoDecorator
+                        fieldValue={github}
+                        settingFunction={setGithub}
+                        fieldName='GitHub Account'
+                    />
                 </div>
 
                 <button
+                    type='submit'
+                    onClick={sendDataOnClick}
                     className='h-12 w-2/5 rounded-md bg-beatsGreen-500 text-beatsWhite-full
                         transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsGreen-700 active:ring-brightness-125'
                 >
                     Register
-                </button>
-                <p className=''>OR</p>
-                <button
-                    className='h-12 w-2/5 text-beatsWhite-full bg-beatsBlack-100 rounded-md relative
-                        transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsWhite-700 active:ring-brightness-125'
-                >
-                    Register with GitHub
-                    <ImageContainer
-                        vertical=''
-                        horizontal=''
-                        width={32}
-                        height={30}
-                        localization='/github.svg'
-                        alt=''
-                        position='absolute'
-                        background='flex justify-center items-center right-8 top-2'
-                    />
                 </button>
             </Container>
         </>

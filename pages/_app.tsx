@@ -6,7 +6,7 @@ import { GlobalDataContextProvider } from '../contexts/GlobalDataContext';
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <GlobalDataContextProvider>
-            <div className='min-h-screen text-beatsWhite-900'>
+            <div className='text-beatsWhite-900'>
                 <Header />
                 <Component {...pageProps} />
             </div>

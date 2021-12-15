@@ -1,5 +1,6 @@
 import useSWR from 'swr';
 import axios from 'axios';
+import { urlApi } from './environments';
 
 function timeout(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -46,7 +47,7 @@ type APIDataType = {
 
 export const useFetch = (receivedURL: string) => {
     const api = axios.create({
-        baseURL: 'https://d215-189-19-117-246.ngrok.io/',
+        baseURL: urlApi,
     });
     // const finalURL = baseURL + receivedURL;
 

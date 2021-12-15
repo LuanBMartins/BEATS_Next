@@ -5,11 +5,12 @@ import { useGlobalData } from '../../../contexts/GlobalDataContext';
 interface LoginMenuItemsProps {
     optionName: string;
     iconName: string;
+    // closingFunction: () => void;
 }
 
 export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
     const router = useRouter();
-    const { toggleOffAllSecurityInformationAttributes: toggleOffAttributes } = useGlobalData();
+    const { toggleOffAllSecurityInformationAttributes: toggleOffAttributes, setLoginData } = useGlobalData();
 
     function navigateOnClick(e: any) {
         const pageToNavigate =
@@ -18,8 +19,18 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
             (optionName == 'Request New Strategy' && 'register-strategy') ||
             (optionName == 'Add New Strategy' && 'register-strategy') ||
             (optionName == 'About Us' && 'about') ||
+            (optionName == 'Logout' && '/') ||
             '404';
 
+        optionName == 'Logout'
+            ? setLoginData({
+                  status: 'logged-off',
+                  token: '',
+                  userType: 'Visitor',
+                  username: '',
+              })
+            : null;
+        console.log(pageToNavigate);
         if (optionName == 'Request New Strategy' || 'Add New Strategy') toggleOffAttributes();
 
         router.push(pageToNavigate);

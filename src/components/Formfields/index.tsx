@@ -151,11 +151,19 @@ export function AliasesFormField({ fieldName, aliasesValues, settingFunction: se
     );
 }
 
-export function TextFormFieldNoDecorator({ fieldName }: fieldProps) {
+export function TextFormFieldNoDecorator({ fieldName, fieldType, settingFunction, fieldValue }: fieldProps) {
+    const handle = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        settingFunction ? settingFunction(value) : null;
+    };
     return (
         <div className='w-full'>
             <label className='font-bold relative block mb-4'>{fieldName}:</label>
             <input
+                type={fieldType}
+                value={fieldValue}
+                onChange={handle}
                 className='bg-beatsBlack-100 h-10 w-full border border-beatsWhite-100 rounded-md px-2
                 focus:outline-none focus:border-beatsGreen-700 focus:ring-1 focus:ring-beatsGreen-700'
             />

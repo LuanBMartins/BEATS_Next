@@ -7,9 +7,13 @@ interface LoginMenuModalProps {
     closingFunction: Function;
 }
 
+interface loggedUserProps {
+    username: string;
+}
+
 export function LoginMenuModal({ closingFunction }: LoginMenuModalProps) {
     const { loginData } = useGlobalData();
-    const { status, userType } = loginData;
+    const { username, userType } = loginData;
 
     const ref: any = useRef();
 
@@ -39,10 +43,10 @@ export function LoginMenuModal({ closingFunction }: LoginMenuModalProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
         >
-            {(userType == 'visitor' && <VisitorTypeList />) ||
-                (userType == 'standardUser' && <StandardUserTypeList />) ||
-                (userType == 'council' && <CouncilTypeList />) ||
-                (userType == 'administrator' && <AdministratorTypeList />)}
+            {(userType == 'Visitor' && <VisitorTypeList />) ||
+                (userType == 'Regular User' && <StandardUserTypeList username={username} />) ||
+                (userType == 'Council Member' && <CouncilTypeList username={username} />) ||
+                (userType == 'Administrator' && <AdministratorTypeList username={username} />)}
         </motion.div>
     );
 }
@@ -65,10 +69,10 @@ function VisitorTypeList() {
     );
 }
 
-function StandardUserTypeList() {
+function StandardUserTypeList({ username }: loggedUserProps) {
     return (
         <>
-            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>UserName</h4>
+            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>{username}</h4>
 
             <h5 className='font-SourceSans text-sm mb-2'>Actions</h5>
             <ul>
@@ -85,10 +89,10 @@ function StandardUserTypeList() {
     );
 }
 
-function CouncilTypeList() {
+function CouncilTypeList({ username }: loggedUserProps) {
     return (
         <>
-            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>UserName</h4>
+            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>{username}</h4>
 
             <h5 className='font-SourceSans text-sm mb-2'>Actions</h5>
             <ul>
@@ -106,10 +110,10 @@ function CouncilTypeList() {
     );
 }
 
-function AdministratorTypeList() {
+function AdministratorTypeList({ username }: loggedUserProps) {
     return (
         <>
-            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>UserName</h4>
+            <h4 className='font-SourceSans text-sm mb-4 relative inline-block underline green-underline'>{username}</h4>
 
             <h5 className='font-SourceSans text-sm mb-2'>Actions</h5>
             <ul>

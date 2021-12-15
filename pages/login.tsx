@@ -3,12 +3,52 @@ import { useRouter } from 'next/router';
 import { Container } from '../src/components/Container';
 import { ImageContainer } from '../src/components/ImageContainer';
 import { TextFormFieldNoDecorator } from '../src/components/Formfields';
+import { useState } from 'react';
+import axios from 'axios';
+import { urlApi } from '../src/hooks/environments';
+import { useGlobalData } from '../contexts/GlobalDataContext';
+
+interface dataFromAPIType {
+    access_token: string;
+    message: string;
+    user_type: 'Visitor' | 'Regular User' | 'Council Member' | 'Administrator';
+    username: string;
+}
 
 export default function LoginPage() {
     const router = useRouter();
+    const { setLoginData } = useGlobalData();
+
+    const [username, setUserName] = useState('');
+    const [password, setPassword] = useState('');
 
     function navigateOnClick() {
         router.push('/signup');
+    }
+
+    function sendDataOnClick(e: any) {
+        e.preventDefault();
+        const dataToSend = { username, password };
+        const headers = {
+            'content-type': 'application/json',
+        };
+        console.log({ ...dataToSend });
+        const finalURL = `${urlApi}/login`;
+        axios
+            .post(finalURL, dataToSend, { headers })
+            .then((dataReceivedFromAPI) => {
+                const rawData: dataFromAPIType = dataReceivedFromAPI.data;
+                console.log(dataReceivedFromAPI);
+                setLoginData({
+                    status: 'logged-in',
+                    token: rawData.access_token,
+                    userType: rawData.user_type,
+                    username: rawData.username,
+                });
+                router.push('/');
+            })
+            .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
+        // router.push('/signup');
     }
 
     return (
@@ -48,12 +88,24 @@ export default function LoginPage() {
                 <h1 className='font-Montserrat text-4xl'>Log In</h1>
 
                 <div className='w-2/4 flex flex-col gap-8 justify-between'>
-                    <TextFormFieldNoDecorator fieldName='E-mail' />
-                    <TextFormFieldNoDecorator fieldName='Password' fieldType='email' />
+                    <TextFormFieldNoDecorator
+                        fieldName='E-mail'
+                        fieldType='email'
+                        fieldValue={username}
+                        settingFunction={setUserName}
+                    />
+                    <TextFormFieldNoDecorator
+                        fieldName='Password'
+                        fieldType='password'
+                        fieldValue={password}
+                        settingFunction={setPassword}
+                    />
                 </div>
 
                 <div className='w-2/4 flex gap-8 justify-between'>
                     <button
+                        type='submit'
+                        onClick={sendDataOnClick}
                         className='h-12 w-6/12 rounded-md bg-beatsGreen-500 text-beatsWhite-full
                         transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsGreen-700 active:ring-brightness-125'
                     >

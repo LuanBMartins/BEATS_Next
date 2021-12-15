@@ -1,10 +1,13 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { LoginMenuModal } from '../LoginMenuModal';
+import { useGlobalData } from '../../../contexts/GlobalDataContext';
 import { AnimatePresence, usePresence, motion } from 'framer-motion';
 
 export function LoginButton() {
     const [isModalOpen, setModalOpen] = useState(false);
+    const { loginData } = useGlobalData();
+    const isUserLoggedIn = loginData.status == 'logged-in' ? true : false;
 
     function controlModal() {
         setModalOpen(!isModalOpen);
@@ -27,7 +30,7 @@ export function LoginButton() {
                         whileTap={{ opacity: 0.8 }}
                     >
                         <Image src='/Material Icons/person.svg' width={32} height={32} alt='Project Logo' />
-                        <h2 className='text-sm font-SourceSans'>Sign In</h2>
+                        <h2 className='text-sm font-SourceSans'>{isUserLoggedIn ? 'Options' : 'Sign In'}</h2>
                     </motion.button>
                 )}
                 {isModalOpen && <LoginMenuModal closingFunction={controlModal} />}
