@@ -199,6 +199,29 @@ export function TextAreaFormField({ fieldName, name, settingFunction, fieldValue
     );
 }
 
+export function TextAreaFormFieldNoDecorator({ fieldName, name, settingFunction, fieldValue, disabled }: fieldProps) {
+    const handle = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        const value = e.target.value;
+
+        settingFunction ? settingFunction(value) : null;
+    };
+
+    return (
+        <div className=''>
+            <label className='font-bold block mb-2'>{fieldName}:</label>
+            <textarea
+                value={fieldValue}
+                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => handle(e)}
+                name={name}
+                className='bg-beatsBlack-100 w-full border border-beatsWhite-100 rounded-md px-2
+                focus:outline-none focus:border-beatsGreen-700 focus:ring-1 focus:ring-beatsGreen-700'
+                rows={2}
+                disabled={disabled}
+            />
+        </div>
+    );
+}
+
 export function ImageFormField({ fieldName, settingFunction }: fieldProps) {
     const [boxMessage, setBoxMessage] = useState('No image(s) selected');
     const [uploadedFiles, setUploadedFiles] = useState(([] as Array<File>) || []);

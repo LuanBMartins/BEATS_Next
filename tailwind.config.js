@@ -46,6 +46,7 @@ module.exports = {
             borderRadius: {
                 '10px': '0.625rem',
                 '20px': '1.25rem',
+                '3px': '3px',
             },
 
             backgroundImage: {
