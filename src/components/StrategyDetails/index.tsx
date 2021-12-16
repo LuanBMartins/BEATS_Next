@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Commentaries } from '../../components/Commentaries';
 import { InfoSecAttributesOnSearchResult, ImageFormField, TextAreaFormField, TextFormField } from '../Formfields';
+import { useFetch } from '../../hooks/useFetch';
+import { urlApi } from '../../hooks/environments';
+import Image from 'next/image';
 
 interface dataRetrievedType {
     a: boolean;
@@ -30,10 +33,29 @@ interface strategyDataProp {
     strategyData: dataRetrievedType;
     commentaries: any;
 }
+
 export function StrategyDetails({ strategyData, commentaries }: strategyDataProp) {
     const { a, acc, aliases, authn, authz, c, i, nr } = strategyData;
     const attributesObject = { a, acc, authn, authz, c, i, nr };
     const formatedDate = new Date(strategyData.publish_date).toLocaleString('en-US');
+
+    const routeToCheckImages = `/strategies/${strategyData.name}/images`;
+    const { data: imageData, error } = useFetch(routeToCheckImages);
+    console.log(imageData, error && error.message);
+
+    const routesToObtainImages: Array<string> = [];
+    imageData &&
+        imageData.images_name.forEach((image_link: string) => {
+            routesToObtainImages.push(`${urlApi}/strategies/${strategyData.name}/images/${imageData.images_name[0]}`);
+        });
+    console.log(routesToObtainImages);
+    // if (imageData && imageData.images_name.length > 0) {
+
+    // const routeToObtainImages = []
+    // imageData.images_name.forEach(() => {
+    //     { data: imageData, error } = useFetch(routeToCheckImages)
+    // })
+    // }
 
     // const [strategyName, setStrategyName] = useState('');
     // const [aliases, setAliases] = useState('');
@@ -56,7 +78,7 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
                     </h1>
 
                     <p
-                        className='font-bold relative block mb-4 ml-4
+                        className='font-bold relative block ml-4
                 before:absolute before:bg-beatsGreen-700 before:h-2 before:w-2 before:block before:top-2 before:-left-4 before:rounded-md'
                     >
                         Aliases:{'  '}
@@ -80,7 +102,18 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
 
                     <TextAreaFormField disabled={true} fieldName='Solution' fieldValue={strategyData.solution} />
 
-                    {/* <ImageFormField fieldName='Optional - upload 1 or more images that show your solution' /> */}
+                    {/* If there are images (length > 0), insert a div container to the images. Map through images generating subdivs for each image */}
+                    {routesToObtainImages.length > 0 ? (
+                        <div className='images-container flex h-80max-h-80 gap-12 flex-wrap'>
+                            {routesToObtainImages.map((imageLink, index) => {
+                                return (
+                                    <div key={index} className='w-2/5 h-80 relative'>
+                                        <Image src={imageLink} alt='' layout='fill' placeholder='empty' />
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : null}
 
                     <TextFormField disabled={true} fieldName='Rationale' fieldValue={strategyData.rationale} />
 
@@ -100,10 +133,10 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
 
                     <TextAreaFormField disabled={true} fieldName='References' fieldValue={references} />
                 </div>
-                <div className='border border-beatsGreen-700 rounded-10px p-6 col-start-4 col-span-1 h-60'>
+                <div className='border border-beatsGreen-700 rounded-10px p-6 col-start-4 col-span-1 w-3/4 mx-auto h-60'>
                     <button
                         type='submit'
-                        className='h-12 w-6/12 rounded-md bg-beatsGreen-500 text-beatsWhite-full font-bold mb-4
+                        className='h-12 w-full rounded-md bg-beatsGreen-500 text-beatsWhite-full font-bold mb-4
                 transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsGreen-700 active:ring-brightness-125'
                     >
                         Request Changes

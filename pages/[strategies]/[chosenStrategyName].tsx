@@ -35,7 +35,7 @@ export default function StrategyDetailsPage() {
     const { data, error } = useFetch(routeToFetch);
     // console.log(data, error);
 
-    const { data: commentaryData, error: commentaryError } = useFetch(routeToFetch + '/comments');
+    const { data: commentaryData, error: commentaryError } = useFetch(routeToFetch + 'comments');
     // console.log(commentaryData.comments, commentaryError);
 
     if (router.isFallback || !data) {

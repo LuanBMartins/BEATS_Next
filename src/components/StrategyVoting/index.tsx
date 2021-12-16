@@ -40,13 +40,16 @@ export function WaitingForAdmApprovalStrategy() {
                         background='ml-1 flex justify-center items-center'
                     />
                 </div>
+
                 <p className='font-bold mb-4'>
                     Protocol Number: <span className='font-normal pl-2'>protocol data</span>
                 </p>
+
                 <p className='font-bold'>
                     Application Date: <span className='font-normal pl-2'>12/17/2021</span>
                 </p>
             </div>
+
             <div className='strategy-buttons col-span-1'>
                 <button
                     type='button'
@@ -84,12 +87,15 @@ export function RejectedByAdminStrategy() {
                 <p className='font-bold mb-4'>
                     Status:<span className={`${statusColor[votingStatus]} font-normal pl-2`}>Rejected by Admin</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Admin Decision: <span className='font-normal pl-2'>protocol data</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Protocol Number: <span className='font-normal pl-2'>protocol data</span>
                 </p>
+
                 <p className='font-bold'>
                     Application Date: <span className='font-normal pl-2'>12/17/2021</span>
                 </p>
@@ -128,15 +134,19 @@ export function CouncilVotingStrategy() {
                         background='ml-1 flex justify-center items-center'
                     />
                 </div>
+
                 <p className='font-bold mb-4'>
                     Protocol Number: <span className='font-normal pl-2'>protocol data</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Number of Reviews: <span className='font-normal pl-2'>number</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Application Date: <span className='font-normal pl-2'>12/17/2021</span>
                 </p>
+
                 <div className='flex'>
                     <p className='font-bold'>Council Votes:</p>
                     <span className='font-normal text-beatsGreen-700 pl-2'>NumberPositiveVotes </span>
@@ -163,6 +173,7 @@ export function CouncilVotingStrategy() {
                     />
                 </div>
             </div>
+
             <div className='strategy-buttons col-span-1'>
                 <button
                     type='button'
@@ -215,15 +226,19 @@ export function ReviewSuggestedStrategy() {
                         background='ml-1 flex justify-center items-center'
                     />
                 </div>
+
                 <p className='font-bold mb-4'>
                     Protocol Number: <span className='font-normal pl-2'>protocol data</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Number of Reviews: <span className='font-normal pl-2'>number</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Application Date: <span className='font-normal pl-2'>12/17/2021</span>
                 </p>
+
                 <div className='flex'>
                     <p className='font-bold'>Council Votes:</p>
                     <span className='font-normal text-beatsGreen-700 pl-2'>NumberPositiveVotes </span>
@@ -253,6 +268,7 @@ export function ReviewSuggestedStrategy() {
                     />
                 </div>
             </div>
+
             <div className='strategy-buttons col-span-1 flex flex-col gap-6'>
                 <button
                     type='button'
@@ -270,6 +286,7 @@ export function ReviewSuggestedStrategy() {
                     />{' '}
                     Delete Application
                 </button>
+
                 <button
                     type='button'
                     className='font-Montserrat text-xl border border-beatsWhite-900 px-6 py-2 rounded-10px w-full flex gap-2 items-center'
@@ -309,12 +326,15 @@ export function ApprovedStrategy() {
                         Approved by admin. Approved by Council. Published.
                     </span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Protocol Number: <span className='font-normal pl-2'>protocol data</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Application Date: <span className='font-normal pl-2'>12/17/2021</span>
                 </p>
+
                 <p className='font-bold'>
                     Acceptance Date: <span className='font-normal pl-2'>12/17/2021</span>
                 </p>
@@ -359,9 +379,11 @@ export function StrategyInAdminPage() {
                 <p className='font-bold mb-4'>
                     Protocol Number: <span className='font-normal pl-2'>protocol data</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Application Date: <span className='font-normal pl-2'>12/17/2021</span>
                 </p>
+
                 <div className='flex align-center'>
                     <p className='font-bold'>Decision:</p>
                     <div className='flex mb-4'>
@@ -399,6 +421,7 @@ export function StrategyInAdminPage() {
                         </button>
                     </div>
                 </div>
+
                 <TextAreaFormFieldNoDecorator
                     fieldName='Commentary'
                     name='commentary'
@@ -406,6 +429,7 @@ export function StrategyInAdminPage() {
                     settingFunction={setCommentary}
                 />
             </div>
+
             <div className='strategy-buttons col-span-1 flex flex-col gap-6'>
                 <button
                     type='button'
@@ -423,6 +447,7 @@ export function StrategyInAdminPage() {
                     />{' '}
                     View Application
                 </button>
+
                 <button
                     type='button'
                     className='font-Montserrat text-xl border border-beatsGreen-900 text-beatsGreen-900 px-6 py-2 rounded-10px w-full flex gap-2 items-center'
@@ -479,9 +504,11 @@ export function StrategyInCouncilPage() {
                 <p className='font-bold mb-4'>
                     Protocol Number: <span className='font-normal pl-2'>protocol data</span>
                 </p>
+
                 <p className='font-bold mb-4'>
                     Application Date: <span className='font-normal pl-2'>12/17/2021</span>
                 </p>
+
                 <div className='flex align-center'>
                     <p className='font-bold'>Decision:</p>
                     <div className='flex mb-4'>
@@ -536,6 +563,7 @@ export function StrategyInCouncilPage() {
                     </div>
                 </div>
             </div>
+
             <div className='strategy-buttons col-span-1 flex flex-col gap-6'>
                 <button
                     type='button'
@@ -553,6 +581,7 @@ export function StrategyInCouncilPage() {
                     />{' '}
                     View Application
                 </button>
+
                 <button
                     type='button'
                     className='font-Montserrat text-xl border border-beatsGreen-900 text-beatsGreen-900 px-6 py-2 rounded-10px w-full flex gap-2 items-center'
