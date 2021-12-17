@@ -2,8 +2,9 @@ import Image from 'next/image';
 import { useGlobalData } from '../../../contexts/GlobalDataContext';
 import axios from 'axios';
 import { urlApi } from '../../hooks/environments';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AddOrEditCommentariesFormField } from '../Formfields';
+import { mutate } from 'swr';
 
 interface commentaryProps {
     commentaries: any;
@@ -70,7 +71,7 @@ function editComment(id: string, token: string, strategyname: string, comment: s
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-function addBaseComment(id: string, token: string, strategyname: string, comment: string) {
+function addBaseComment(token: string, strategyname: string, comment: string) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -113,8 +114,15 @@ function addResponseComment(id: string, token: string, strategyname: string, com
 }
 
 export function Commentaries({ commentaries, strategyName }: commentaryProps) {
-    console.log(commentaries && commentaries.comments);
+    // console.log(commentaries && commentaries.comments);
     const { loginData } = useGlobalData();
+
+    const [newComment, setNewComment] = useState('');
+    const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
+
+    function handleSendNewBaseComment() {
+        addBaseComment(loginData.token, strategyName, newComment);
+    }
 
     const isUserLoggedIn = loginData.status == 'logged-in' ? true : false;
 
@@ -125,15 +133,34 @@ export function Commentaries({ commentaries, strategyName }: commentaryProps) {
                         before:absolute before:bg-beatsGreen-700 before:h-12 before:w-4 before:block before:top-0 before:left-0 before:
                         flex flex-col w-full'
             >
-                <div className='mb-10 flex items-center align-center gap-6'>
-                    <h2 className='font-Montserrat font-bold text-2xl'>Commentaries</h2>
-                    <div className='relative'>
-                        {isUserLoggedIn ? <Image src='/add.svg' alt='' height={28} width={28} /> : null}
+                <div className='mb-10 flex flex-col align-center gap-6'>
+                    <div className='flex gap-6'>
+                        <h2 className='font-Montserrat font-bold text-2xl'>Commentaries</h2>
+                        <div className='relative'>
+                            {isUserLoggedIn ? (
+                                <Image
+                                    src='/add.svg'
+                                    alt=''
+                                    height={28}
+                                    width={28}
+                                    onClick={(e) => setIsCommentBoxOpen(true)}
+                                />
+                            ) : null}
+                        </div>
                     </div>
+                    {isCommentBoxOpen ? (
+                        <AddOrEditCommentariesFormField
+                            fieldName=''
+                            fieldValue={newComment}
+                            settingFunction={setNewComment}
+                            name='comment'
+                            sendFunction={handleSendNewBaseComment}
+                        />
+                    ) : null}
                 </div>
                 {commentaries &&
                     commentaries.comments.map((commentary: baseCommentaryProps) => {
-                        console.log(commentary);
+                        // console.log(commentary);
                         return (
                             <BaseCommentary
                                 key={commentary.id}
@@ -160,6 +187,10 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
     const [newEditionOnComment, setNewEditionOnComment] = useState('');
     const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
 
+    // useEffect(() => {
+    //     console.log(newComment);
+    // }, [newComment]);
+
     const formatedDate = new Date(date).toLocaleString('en-US');
     const { loginData } = useGlobalData();
 
@@ -167,11 +198,12 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
     const isUserAllowedToEditOrDelete =
         loginData.username == author || loginData.userType == 'Administrator' ? true : false;
 
+    function handleSendResponseComment() {
+        addResponseComment(id, loginData.token, strategyName, newComment);
+    }
+
     function handleSendEdit() {
         editComment(id, loginData.token, strategyName, newEditionOnComment);
-    }
-    function handleSendNewBaseComment() {
-        addBaseComment(id, loginData.token, strategyName, newEditionOnComment);
     }
 
     return (
@@ -202,6 +234,16 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
                 ) : null}
             </div>
 
+            {isCommentBoxOpen ? (
+                <AddOrEditCommentariesFormField
+                    fieldName=''
+                    fieldValue={newComment}
+                    settingFunction={setNewComment}
+                    name='comment'
+                    sendFunction={handleSendResponseComment}
+                />
+            ) : null}
+
             {isEditBoxOpen ? (
                 <AddOrEditCommentariesFormField
                     fieldName=''
@@ -209,16 +251,6 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
                     settingFunction={setNewEditionOnComment}
                     name='comment'
                     sendFunction={handleSendEdit}
-                />
-            ) : null}
-
-            {isCommentBoxOpen ? (
-                <AddOrEditCommentariesFormField
-                    fieldName=''
-                    fieldValue={newComment}
-                    settingFunction={setNewComment}
-                    name='comment'
-                    sendFunction={handleSendNewBaseComment}
                 />
             ) : null}
 
@@ -241,18 +273,11 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
 }
 
 function ResponseCommentary({ author, date, text, id, strategyName }: responseCommentaryProps) {
-    const [newComment, setNewComment] = useState('');
-    const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
-
     const [newEditionOnComment, setNewEditionOnComment] = useState('');
     const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
 
     function handleSendEdit() {
         editComment(id, loginData.token, strategyName, newEditionOnComment);
-    }
-
-    function handleSendNewBaseComment() {
-        addResponseComment(id, loginData.token, strategyName, newEditionOnComment);
     }
 
     const formatedDate = new Date(date).toLocaleString('en-US');
@@ -273,12 +298,11 @@ function ResponseCommentary({ author, date, text, id, strategyName }: responseCo
             </p>
             <div className='relative flex items-center align-center gap-2 mb-2 ml-10'>
                 <span className='text-base'>- {formatedDate}</span>
-                {isUserLoggedIn ? (
-                    <Image src='/add.svg' alt='' height={24} width={24} onClick={(e) => setIsCommentBoxOpen(true)} />
-                ) : null}
+
                 {isUserAllowedToEditOrDelete ? (
                     <Image src='/edit.svg' alt='' height={24} width={24} onClick={(e) => setIsEditBoxOpen(true)} />
                 ) : null}
+
                 {isUserAllowedToEditOrDelete ? (
                     <Image
                         src='/delete.svg'
@@ -296,16 +320,6 @@ function ResponseCommentary({ author, date, text, id, strategyName }: responseCo
                     settingFunction={setNewEditionOnComment}
                     name='comment'
                     sendFunction={handleSendEdit}
-                />
-            ) : null}
-
-            {isCommentBoxOpen ? (
-                <AddOrEditCommentariesFormField
-                    fieldName=''
-                    fieldValue={newComment}
-                    settingFunction={setNewComment}
-                    name='comment'
-                    sendFunction={handleSendNewBaseComment}
                 />
             ) : null}
         </>

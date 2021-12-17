@@ -2,6 +2,6 @@
 module.exports = {
     reactStrictMode: true,
     images: {
-        domains: ['3a62-189-19-117-246.ngrok.io'],
+        domains: ['b8a0-189-19-117-246.ngrok.io'],
     },
 };

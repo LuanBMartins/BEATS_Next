@@ -32,7 +32,7 @@ export default function LoginPage() {
         const headers = {
             'content-type': 'application/json',
         };
-        console.log({ ...dataToSend });
+        // console.log({ ...dataToSend });
         const finalURL = `${urlApi}/login`;
         axios
             .post(finalURL, dataToSend, { headers })

@@ -33,14 +33,14 @@ interface SearchResultType {
     strategies: resultsItemProps[];
 }
 
-export default function SearchPage() {
+export default function StrategyDetailsPage() {
     const router = useRouter();
 
     // Splitting the mounted URL, taking off the / character to get just the query to send to the API
     const route = router.asPath.split('/')[1];
     // console.log(router);
     const { data, error } = useFetch(route);
-    console.log(data, route, router);
+    // console.log(data, route, router);
 
     if (router.isFallback || !data) {
         return (

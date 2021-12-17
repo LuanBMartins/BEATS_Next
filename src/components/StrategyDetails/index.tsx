@@ -41,14 +41,14 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
 
     const routeToCheckImages = `/strategies/${strategyData.name}/images`;
     const { data: imageData, error } = useFetch(routeToCheckImages);
-    console.log(imageData, error && error.message);
+    // console.log(imageData, error && error.message);
 
     const routesToObtainImages: Array<string> = [];
     imageData &&
         imageData.images_name.forEach((image_link: string) => {
             routesToObtainImages.push(`${urlApi}/strategies/${strategyData.name}/images/${imageData.images_name[0]}`);
         });
-    console.log(routesToObtainImages);
+    // console.log(routesToObtainImages);
     // if (imageData && imageData.images_name.length > 0) {
 
     // const routeToObtainImages = []

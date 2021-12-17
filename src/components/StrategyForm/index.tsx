@@ -21,9 +21,9 @@ export function StrategyForm() {
     const [relatedPatterns, setRelatedPatterns] = useState('');
     const [references, setReferences] = useState('');
 
-    useEffect(() => {
-        console.log(aliases);
-    }, [aliases]);
+    // useEffect(() => {
+    //     console.log(aliases);
+    // }, [aliases]);
     function sendData(e: any) {
         e.preventDefault();
 

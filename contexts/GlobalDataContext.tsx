@@ -69,10 +69,10 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         'non-Repudiation': false,
     });
     const [loginData, setLoginData] = useState({
-        status: 'logged-in',
+        status: 'logged-off',
         userType: 'Visitor',
-        token: '134q-32',
-        username: 'Marcelo Moraes',
+        token: '',
+        username: '',
     } as loginData);
 
     // useEffect(() => {

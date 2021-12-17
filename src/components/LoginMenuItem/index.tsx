@@ -14,11 +14,11 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
 
     function navigateOnClick(e: any) {
         const pageToNavigate =
-            (optionName == 'Log In' && 'login') ||
-            (optionName == 'Sign Up' && 'signup') ||
-            (optionName == 'Request New Strategy' && 'register-strategy') ||
-            (optionName == 'Add New Strategy' && 'register-strategy') ||
-            (optionName == 'About Us' && 'about') ||
+            (optionName == 'Log In' && '/login') ||
+            (optionName == 'Sign Up' && '/signup') ||
+            (optionName == 'Request New Strategy' && '/register-strategy') ||
+            (optionName == 'Add New Strategy' && '/register-strategy') ||
+            (optionName == 'About Us' && '/about') ||
             (optionName == 'Logout' && '/') ||
             '404';
 
@@ -30,7 +30,7 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
                   username: '',
               })
             : null;
-        console.log(pageToNavigate);
+        // console.log(pageToNavigate, router);
         if (optionName == 'Request New Strategy' || 'Add New Strategy') toggleOffAttributes();
 
         router.push(pageToNavigate);

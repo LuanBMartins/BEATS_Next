@@ -31,15 +31,15 @@ export default function SignUpPage() {
         const headers = {
             'content-type': 'application/json',
         };
-        console.log({ ...dataToSend });
+        // console.log({ ...dataToSend });
         const finalURL = `${urlApi}/register`;
 
-        console.log(dataToSend, headers, finalURL);
+        // console.log(dataToSend, headers, finalURL);
         axios
             .post(finalURL, dataToSend, { headers })
             .then((dataReceivedFromAPI) => {
                 const rawData: dataFromAPIType = dataReceivedFromAPI.data;
-                console.log(dataReceivedFromAPI);
+                // console.log(dataReceivedFromAPI);
                 setLoginData({
                     status: 'logged-in',
                     token: rawData.access_token,

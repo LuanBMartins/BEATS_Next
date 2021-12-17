@@ -45,18 +45,24 @@ type APIDataType = {
 //     // return data;
 // };
 
-export const useFetch = (receivedURL: string) => {
+export const useFetch = (receivedURL: string, refreshInterval = 0) => {
     const api = axios.create({
         baseURL: urlApi,
     });
     // const finalURL = baseURL + receivedURL;
 
-    const { data, error } = useSWR(receivedURL, async (receivedURL) => {
-        const response = await api.get(receivedURL);
-        const data = response.data;
+    const { data, error } = useSWR(
+        receivedURL,
+        async (receivedURL) => {
+            const response = await api.get(receivedURL);
+            const data = response.data;
 
-        return data;
-    });
+            return data;
+        },
+        {
+            refreshInterval: refreshInterval,
+        }
+    );
 
     return { data, error };
     // const { data } = useSWR('api', async () => {
