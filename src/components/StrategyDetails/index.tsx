@@ -152,7 +152,7 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
                 </div>
             </main>
 
-            <Commentaries commentaries={commentaries} />
+            <Commentaries strategyName={strategyData.name} commentaries={commentaries} />
         </>
     );
 }

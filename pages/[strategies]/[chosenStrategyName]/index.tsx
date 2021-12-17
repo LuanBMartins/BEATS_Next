@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import { StrategyDetails } from '../../src/components/StrategyDetails';
-import { Skeleton } from '../../src/components/Skeleton';
-import { useFetch } from '../../src/hooks/useFetch';
+import { StrategyDetails } from '../../../src/components/StrategyDetails';
+import { Skeleton } from '../../../src/components/Skeleton';
+import { useFetch } from '../../../src/hooks/useFetch';
 import { useRouter } from 'next/router';
 
 interface dataRetrievedType {
@@ -35,7 +35,8 @@ export default function StrategyDetailsPage() {
     const { data, error } = useFetch(routeToFetch);
     // console.log(data, error);
 
-    const { data: commentaryData, error: commentaryError } = useFetch(routeToFetch + 'comments');
+    console.log(routeToFetch + '/comments');
+    const { data: commentaryData, error: commentaryError } = useFetch(routeToFetch + '/comments');
     // console.log(commentaryData.comments, commentaryError);
 
     if (router.isFallback || !data) {

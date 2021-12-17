@@ -13,6 +13,7 @@ interface fieldProps {
     isRequired?: boolean;
     searchResultAttributesObject?: any;
     disabled?: boolean | false;
+    sendFunction?: () => void;
 }
 
 export function TextFormField({
@@ -351,6 +352,42 @@ export function InfoSecAttributesOnSearchResult({ searchResultAttributesObject, 
                         ) : null;
                     })}
             </div>
+        </div>
+    );
+}
+
+export function AddOrEditCommentariesFormField({ fieldType, settingFunction, fieldValue, sendFunction }: fieldProps) {
+    const handle = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        settingFunction ? settingFunction(value) : null;
+    };
+    return (
+        <div className='w-full flex items-center align-center gap-4'>
+            <input
+                type={fieldType}
+                value={fieldValue}
+                onChange={handle}
+                className='bg-beatsBlack-100 h-10 w-3/4 border border-beatsWhite-100 rounded-md px-2
+                focus:outline-none focus:border-beatsGreen-700 focus:ring-1 focus:ring-beatsGreen-700'
+            />
+            <button
+                className='border-beatsGreen-700
+                transition duration-400 ease-in hover:brightness-75
+                flex justify-center items-center h-full cursor-pointer'
+                onClick={sendFunction}
+            >
+                <ImageContainer
+                    vertical=''
+                    horizontal=''
+                    width={24}
+                    height={24}
+                    localization='/Material Icons/send.svg'
+                    alt=''
+                    position=''
+                    background='flex justify-center items-center'
+                />
+            </button>
         </div>
     );
 }

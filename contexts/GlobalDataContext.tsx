@@ -69,10 +69,10 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         'non-Repudiation': false,
     });
     const [loginData, setLoginData] = useState({
-        status: 'logged-off',
+        status: 'logged-in',
         userType: 'Visitor',
-        token: '',
-        username: '',
+        token: '134q-32',
+        username: 'Marcelo Moraes',
     } as loginData);
 
     // useEffect(() => {
@@ -140,7 +140,7 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         const strategyNameForURL =
             strategyNameWithNoSpacesForURL.length != 0 ? `name=${strategyNameWithNoSpacesForURL}&` : '';
 
-        const URLtoSearch = `strategies?${strategyNameForURL}type=${typeForURL}${secInfoAttributesForURL}`;
+        const URLtoSearch = `/strategies?${strategyNameForURL}type=${typeForURL}${secInfoAttributesForURL}`;
         // console.log(URLtoSearch);
         return URLtoSearch;
     }

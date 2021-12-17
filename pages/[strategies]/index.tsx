@@ -25,7 +25,7 @@ import { useEffect } from 'react';
 // export const getStaticProps: GetStaticProps = async () => {
 //     return {
 //         props: {},
-//         revalidate: 60 * 60 * 24, // In seconds -> Trying to regenerate the page if there's difference to the cache every access after 24h
+//         revalidate: 600, // In seconds -> Trying to regenerate the page if there's difference to the cache every access after 24h 60 * 60 * 24
 //     };
 // };
 
@@ -38,13 +38,9 @@ export default function SearchPage() {
 
     // Splitting the mounted URL, taking off the / character to get just the query to send to the API
     const route = router.asPath.split('/')[1];
+    // console.log(router);
     const { data, error } = useFetch(route);
-
-    const queryData = router.query;
-    console.log(data);
-
-    const { termToSearch, setTermToSearch, securityInformationAttributes } = useGlobalData();
-    // console.log(queryData.a);
+    console.log(data, route, router);
 
     if (router.isFallback || !data) {
         return (
