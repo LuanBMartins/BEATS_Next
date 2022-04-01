@@ -1,7 +1,7 @@
-import { useEffect, useState, Dispatch, SetStateAction, ChangeEvent, useRef } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
+import { securityInformationItemsInitials } from '../../../contexts/GlobalDataContext';
 import { Chip } from '../Chip';
 import { ImageContainer } from '../ImageContainer';
-import { securityInformationItemsInitials } from '../../../contexts/GlobalDataContext';
 
 interface fieldProps {
     fieldName: string;
@@ -236,17 +236,17 @@ export function ImageFormField({ fieldName, settingFunction }: fieldProps) {
         });
 
         if (listOfFilesReturned.length === 0) setBoxMessage('No image(s) selected');
-        else if (listOfFilesReturned.length > 2) {
-            setBoxMessage('You have selected more than 2 files, attaching the first ones.');
-            const finalArray = listOfFilesReturned.slice(0, 2) as Array<File>;
+        else if (listOfFilesReturned.length > 10) {
+            setBoxMessage('You have selected more than 10 files, attaching the first ones.');
+            const finalArray = listOfFilesReturned.slice(0, 10) as Array<File>;
             setUploadedFiles(finalArray);
         } else if (listOfFilesReturned.length == 1) {
             setBoxMessage('1 File selected:');
             const finalArray = listOfFilesReturned.slice(0, 1) as Array<File>;
             setUploadedFiles(finalArray);
-        } else if (listOfFilesReturned.length == 2) {
-            setBoxMessage('2 Files selected:');
-            const finalArray = listOfFilesReturned.slice(0, 2) as Array<File>;
+        } else if (listOfFilesReturned.length >= 2 && listOfFilesReturned.length <= 10) {
+            setBoxMessage(`${listOfFilesReturned.length} Files selected:`);
+            const finalArray = listOfFilesReturned.slice(0, listOfFilesReturned.length) as Array<File>;
             setUploadedFiles(finalArray);
             settingFunction ? settingFunction(finalArray) : null;
         }
