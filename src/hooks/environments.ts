@@ -1,2 +1,2 @@
 // //Constantes de rotas - Ambiente de desenvolvimento
-export const urlApi = 'https://b8a0-189-19-117-246.ngrok.io';
+export const urlApi = 'https://beats.loca.lt';

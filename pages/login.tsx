@@ -1,12 +1,12 @@
+import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Container } from '../src/components/Container';
-import { ImageContainer } from '../src/components/ImageContainer';
-import { TextFormFieldNoDecorator } from '../src/components/Formfields';
 import { useState } from 'react';
-import axios from 'axios';
-import { urlApi } from '../src/hooks/environments';
 import { useGlobalData } from '../contexts/GlobalDataContext';
+import { Container } from '../src/components/Container';
+import { TextFormFieldNoDecorator } from '../src/components/Formfields';
+import { ImageContainer } from '../src/components/ImageContainer';
+import { urlApi } from '../src/hooks/environments';
 
 interface dataFromAPIType {
     access_token: string;
@@ -31,6 +31,8 @@ export default function LoginPage() {
         const dataToSend = { username, password };
         const headers = {
             'content-type': 'application/json',
+            //Header do tunnel
+            'Bypass-Tunnel-Reminder': 'ablabluble',
         };
         // console.log({ ...dataToSend });
         const finalURL = `${urlApi}/login`;

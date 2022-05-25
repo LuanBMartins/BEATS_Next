@@ -1,5 +1,5 @@
-import useSWR from 'swr';
 import axios from 'axios';
+import useSWR from 'swr';
 import { urlApi } from './environments';
 
 function timeout(ms: number) {
@@ -48,6 +48,8 @@ type APIDataType = {
 export const useFetch = (receivedURL: string, refreshInterval = 0) => {
     const api = axios.create({
         baseURL: urlApi,
+        //Header do tunnel
+        headers: { 'Bypass-Tunnel-Reminder': 'ablabluble' },
     });
     // const finalURL = baseURL + receivedURL;
 
