@@ -89,7 +89,7 @@ export function AliasesFormField({ fieldName, aliasesValues, settingFunction: se
     return (
         <div className='w-full'>
             <label
-                className='font-bold relative block mb-4 ml-4 relative
+                className='font-bold relative block mb-4 ml-4
             before:absolute before:bg-beatsGreen-700 before:h-2 before:w-2 before:block before:top-2 before:-left-4 before:rounded-md'
             >
                 {fieldName}:

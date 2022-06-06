@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Commentaries } from '../../components/Commentaries';
-import { InfoSecAttributesOnSearchResult, ImageFormField, TextAreaFormField, TextFormField } from '../Formfields';
-import { useFetch } from '../../hooks/useFetch';
-import { urlApi } from '../../hooks/environments';
 import Image from 'next/image';
+import { Commentaries } from '../../components/Commentaries';
+import { urlApi } from '../../hooks/environments';
+import { useFetch } from '../../hooks/useFetch';
+import { InfoSecAttributesOnSearchResult, TextAreaFormField, TextFormField } from '../Formfields';
+import { RadioSelectorInStrategyDetails } from '../RadioSelector';
 
 interface dataRetrievedType {
     a: boolean;
@@ -35,7 +35,7 @@ interface strategyDataProp {
 }
 
 export function StrategyDetails({ strategyData, commentaries }: strategyDataProp) {
-    const { a, acc, aliases, authn, authz, c, i, nr } = strategyData;
+    const { a, acc, aliases, authn, authz, c, i, nr, type, 'complementary references': references } = strategyData;
     const attributesObject = { a, acc, authn, authz, c, i, nr };
     const formatedDate = new Date(strategyData.publish_date).toLocaleString('en-US');
 
@@ -46,7 +46,8 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
     const routesToObtainImages: Array<string> = [];
     imageData &&
         imageData.images_name.forEach((image_link: string) => {
-            routesToObtainImages.push(`${urlApi}/strategies/${strategyData.name}/images/${imageData.images_name[0]}`);
+            // console.log(image_link);
+            routesToObtainImages.push(`${urlApi}/strategies/${strategyData.name}/images/${image_link}`);
         });
     // console.log(routesToObtainImages);
     // if (imageData && imageData.images_name.length > 0) {
@@ -67,7 +68,8 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
     // const [consequences, setConsequences] = useState('');
     // const [examples, setExamples] = useState('');
     // const [relatedPatterns, setRelatedPatterns] = useState('');
-    const [references, setReferences] = useState('');
+    // const [references, setReferences] = useState('');
+    // console.log(strategyData);
 
     return (
         <>
@@ -90,6 +92,8 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
                             );
                         })}
                     </p>
+
+                    <RadioSelectorInStrategyDetails receivedType={type.toLowerCase()} />
 
                     <InfoSecAttributesOnSearchResult
                         fieldName='Attributes'

@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 import { Container } from '../Container';
 import {
-    InfoSecAttributesBox,
+    AliasesFormField,
     ImageFormField,
+    InfoSecAttributesBox,
     TextAreaFormField,
     TextFormField,
-    AliasesFormField,
 } from '../Formfields';
+import { RadioSelectorInRegisterStrategy } from '../RadioSelector';
 
 export function StrategyForm() {
     const [strategyName, setStrategyName] = useState('');
     const [aliases, setAliases] = useState([]);
     const [problem, setProblem] = useState('');
+    const [type, setType] = useState('tactic');
     const [forces, setForces] = useState('');
     const [images, setImages] = useState([] as Array<File>);
     const [solution, setSolution] = useState('');
@@ -28,9 +31,17 @@ export function StrategyForm() {
         e.preventDefault();
 
         const fd = new FormData();
-        fd.append('image', images[0], images[0].name);
+        let concatenetadAliases: string = '';
+
+        images.forEach((image) => {
+            fd.append('image', image, image.name);
+        });
+        // fd.append('image', images[0], images[0].name);
         fd.append('strategyName', strategyName);
-        // fd.append('aliases', aliases);
+        aliases.forEach((alias) => {
+            concatenetadAliases = concatenetadAliases + '^$22' + alias;
+        });
+        fd.append('aliases', concatenetadAliases);
         fd.append('problem', problem);
         fd.append('forces', forces);
         fd.append('solution', solution);
@@ -40,11 +51,25 @@ export function StrategyForm() {
         fd.append('relatedPatterns', relatedPatterns);
         fd.append('references', references);
 
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:3000/api/hello');
-        xhr.upload.addEventListener('loadend', () => console.log('Terminou de mandar'), false);
-        xhr.setRequestHeader('Content-Type', 'multipart/form-data');
-        xhr.send(fd);
+        axios
+            .post(
+                'http://localhost:3000/api/hello',
+                // 'https://beats.loca.lt/requests/addition',
+                fd,
+                //Header do tunnel
+                {
+                    headers: { 'Bypass-Tunnel-Reminder': 'ablabluble', 'Content-Type': 'multipart/form-data' },
+                    onUploadProgress: (event) => {
+                        console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+                    },
+                }
+            )
+            .then(() => console.log('Terminou de mandar'));
+        // const xhr = new XMLHttpRequest();
+        // xhr.open('POST', 'https://beats.loca.lt/requests/addition');
+        // xhr.upload.addEventListener('loadend', () => console.log('Terminou de mandar'), false);
+        // xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+        // xhr.send(fd);
         // for (let pair of fd.entries()) {
         //     console.log(`${pair[0]}, ${pair[1]}`);
         // }
@@ -76,6 +101,8 @@ export function StrategyForm() {
                     aliasesValues={aliases}
                     settingFunction={setAliases}
                 />
+
+                <RadioSelectorInRegisterStrategy type={type} changeType={setType} />
 
                 <InfoSecAttributesBox fieldName='InfoSec Attributes' />
 
