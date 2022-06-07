@@ -1,14 +1,23 @@
-import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container } from '../Container';
 import {
     AliasesFormField,
     ImageFormField,
-    InfoSecAttributesBox,
+    InfoSecAttributesBoxInForm,
     TextAreaFormField,
     TextFormField,
 } from '../Formfields';
 import { RadioSelectorInRegisterStrategy } from '../RadioSelector';
+
+interface attObjectType {
+    c: boolean;
+    i: boolean;
+    a: boolean;
+    authn: boolean;
+    authz: boolean;
+    acc: boolean;
+    nr: boolean;
+}
 
 export function StrategyForm() {
     const [strategyName, setStrategyName] = useState('');
@@ -23,10 +32,44 @@ export function StrategyForm() {
     const [examples, setExamples] = useState('');
     const [relatedPatterns, setRelatedPatterns] = useState('');
     const [references, setReferences] = useState('');
+    const [attributesObject, setAttributesObject] = useState({
+        c: false,
+        i: false,
+        a: false,
+        authn: false,
+        authz: false,
+        acc: false,
+        nr: false,
+    });
 
-    // useEffect(() => {
-    //     console.log(aliases);
-    // }, [aliases]);
+    useEffect(() => {
+        console.log(attributesObject);
+    }, [attributesObject]);
+
+    function toggleAttributesObject(attributeName: string) {
+        const conversion = {
+            confidentiality: 'c',
+            integrity: 'i',
+            availability: 'a',
+            authentication: 'authn',
+            authorization: 'authz',
+            accountability: 'acc',
+            'non-Repudiation': 'nr',
+        };
+        const keyValuePairInConversionObject = Object.entries(conversion).find(([key, value]) => key == attributeName);
+        const newStateKey = keyValuePairInConversionObject && keyValuePairInConversionObject[1];
+
+        const keyValuePairInAttributesObject = Object.entries(attributesObject).find(
+            ([key, value]) => key == newStateKey
+        );
+        const stateValue = keyValuePairInAttributesObject && keyValuePairInAttributesObject[1];
+        const newStateValue = !stateValue;
+
+        const newState = { ...attributesObject, [newStateKey as keyof attObjectType]: newStateValue };
+        // console.log(newState);
+        setAttributesObject(newState);
+    }
+
     function sendData(e: any) {
         e.preventDefault();
 
@@ -51,20 +94,22 @@ export function StrategyForm() {
         fd.append('relatedPatterns', relatedPatterns);
         fd.append('references', references);
 
-        axios
-            .post(
-                'http://localhost:3000/api/hello',
-                // 'https://beats.loca.lt/requests/addition',
-                fd,
-                //Header do tunnel
-                {
-                    headers: { 'Bypass-Tunnel-Reminder': 'ablabluble', 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: (event) => {
-                        console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
-                    },
-                }
-            )
-            .then(() => console.log('Terminou de mandar'));
+        console.log(`
+        Attributes: ${attributesObject}`);
+        // axios
+        //     .post(
+        //         'http://localhost:3000/api/hello',
+        //         // 'https://beats.loca.lt/requests/addition',
+        //         fd,
+        //         //Header do tunnel
+        //         {
+        //             headers: { 'Bypass-Tunnel-Reminder': 'ablabluble', 'Content-Type': 'multipart/form-data' },
+        //             onUploadProgress: (event) => {
+        //                 console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+        //             },
+        //         }
+        //     )
+        //     .then(() => console.log('Terminou de mandar'));
         // const xhr = new XMLHttpRequest();
         // xhr.open('POST', 'https://beats.loca.lt/requests/addition');
         // xhr.upload.addEventListener('loadend', () => console.log('Terminou de mandar'), false);
@@ -104,7 +149,11 @@ export function StrategyForm() {
 
                 <RadioSelectorInRegisterStrategy type={type} changeType={setType} />
 
-                <InfoSecAttributesBox fieldName='InfoSec Attributes' />
+                <InfoSecAttributesBoxInForm
+                    fieldName='InfoSec Attributes'
+                    attributesObjectSettingFunction={toggleAttributesObject}
+                    attributesObject={attributesObject}
+                />
 
                 <TextAreaFormField
                     fieldName='Problem'

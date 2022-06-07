@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
 import { securityInformationItemsInitials } from '../../../contexts/GlobalDataContext';
-import { Chip } from '../Chip';
+import { Chip, FormChip } from '../Chip';
 import { ImageContainer } from '../ImageContainer';
 
 interface fieldProps {
@@ -14,6 +14,22 @@ interface fieldProps {
     searchResultAttributesObject?: any;
     disabled?: boolean | false;
     sendFunction?: () => void;
+}
+
+interface attributesBoxProps {
+    fieldName: string;
+    attributesObjectSettingFunction: (attributeName: string) => void;
+    attributesObject: attObjectType;
+}
+
+interface attObjectType {
+    c: boolean;
+    i: boolean;
+    a: boolean;
+    authn: boolean;
+    authz: boolean;
+    acc: boolean;
+    nr: boolean;
 }
 
 export function TextFormField({
@@ -293,7 +309,11 @@ export function ImageFormField({ fieldName, settingFunction }: fieldProps) {
     );
 }
 
-export function InfoSecAttributesBox({ fieldName }: fieldProps) {
+export function InfoSecAttributesBoxInForm({
+    fieldName,
+    attributesObjectSettingFunction,
+    attributesObject,
+}: attributesBoxProps) {
     return (
         <div className='w-full'>
             <label
@@ -303,13 +323,55 @@ export function InfoSecAttributesBox({ fieldName }: fieldProps) {
                 {fieldName}:
             </label>
             <div className='flex flex-wrap gap-2'>
-                <Chip attributeName='Confidentiality' iconName='info' isChipSelectable={true} />
-                <Chip attributeName='Integrity' iconName='info' isChipSelectable={true} />
-                <Chip attributeName='Availability' iconName='info' isChipSelectable={true} />
-                <Chip attributeName='Authentication' iconName='info' isChipSelectable={true} />
-                <Chip attributeName='Authorization' iconName='info' isChipSelectable={true} />
-                <Chip attributeName='Accountability' iconName='info' isChipSelectable={true} />
-                <Chip attributeName='Non-Repudiation' iconName='info' isChipSelectable={true} />
+                <FormChip
+                    attributeName='Confidentiality'
+                    iconName='info'
+                    isChipSelectable
+                    toggleFunction={attributesObjectSettingFunction}
+                    chipState={attributesObject.c}
+                />
+                <FormChip
+                    attributeName='Integrity'
+                    iconName='info'
+                    isChipSelectable
+                    toggleFunction={attributesObjectSettingFunction}
+                    chipState={attributesObject.i}
+                />
+                <FormChip
+                    attributeName='Availability'
+                    iconName='info'
+                    isChipSelectable
+                    toggleFunction={attributesObjectSettingFunction}
+                    chipState={attributesObject.a}
+                />
+                <FormChip
+                    attributeName='Authentication'
+                    iconName='info'
+                    isChipSelectable
+                    toggleFunction={attributesObjectSettingFunction}
+                    chipState={attributesObject.authn}
+                />
+                <FormChip
+                    attributeName='Authorization'
+                    iconName='info'
+                    isChipSelectable
+                    toggleFunction={attributesObjectSettingFunction}
+                    chipState={attributesObject.authz}
+                />
+                <FormChip
+                    attributeName='Accountability'
+                    iconName='info'
+                    isChipSelectable
+                    toggleFunction={attributesObjectSettingFunction}
+                    chipState={attributesObject.acc}
+                />
+                <FormChip
+                    attributeName='Non-Repudiation'
+                    iconName='info'
+                    isChipSelectable
+                    toggleFunction={attributesObjectSettingFunction}
+                    chipState={attributesObject.nr}
+                />
             </div>
         </div>
     );
