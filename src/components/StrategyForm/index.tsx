@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { Container } from '../Container';
 import {
     AliasesFormField,
@@ -7,6 +9,7 @@ import {
     TextAreaFormField,
     TextFormField,
 } from '../Formfields';
+import { FormSendingButton } from '../FormSendingButton';
 import { RadioSelectorInRegisterStrategy } from '../RadioSelector';
 
 interface attObjectType {
@@ -19,7 +22,11 @@ interface attObjectType {
     nr: boolean;
 }
 
-export function StrategyForm() {
+type StrategyFormProps = {
+    APIToken: string;
+};
+export function StrategyForm({ APIToken }: StrategyFormProps) {
+    const [sendingStatus, setSendingStatus] = useState('stale');
     const [strategyName, setStrategyName] = useState('');
     const [aliases, setAliases] = useState([]);
     const [problem, setProblem] = useState('');
@@ -41,10 +48,11 @@ export function StrategyForm() {
         acc: false,
         nr: false,
     });
+    const router = useRouter();
 
-    useEffect(() => {
-        console.log(attributesObject);
-    }, [attributesObject]);
+    // useEffect(() => {
+    //     console.log(attributesObject);
+    // }, [attributesObject]);
 
     function toggleAttributesObject(attributeName: string) {
         const conversion = {
@@ -70,46 +78,83 @@ export function StrategyForm() {
         setAttributesObject(newState);
     }
 
+    function resetStatus(e: any) {
+        e.preventDefault();
+        setSendingStatus('stale');
+    }
+
+    function navigate() {
+        router.push('/');
+    }
+
     function sendData(e: any) {
         e.preventDefault();
+        setSendingStatus('loading');
 
         const fd = new FormData();
-        let concatenetadAliases: string = '';
+        // let concatenetadAliases: string = '';
 
         images.forEach((image) => {
             fd.append('image', image, image.name);
         });
         // fd.append('image', images[0], images[0].name);
-        fd.append('strategyName', strategyName);
-        aliases.forEach((alias) => {
-            concatenetadAliases = concatenetadAliases + '^$22' + alias;
-        });
-        fd.append('aliases', concatenetadAliases);
-        fd.append('problem', problem);
-        fd.append('forces', forces);
-        fd.append('solution', solution);
-        fd.append('rationale', rationale);
-        fd.append('consequences', consequences);
-        fd.append('examples', examples);
-        fd.append('relatedPatterns', relatedPatterns);
-        fd.append('references', references);
 
-        console.log(`
-        Attributes: ${attributesObject}`);
-        // axios
-        //     .post(
-        //         'http://localhost:3000/api/hello',
-        //         // 'https://beats.loca.lt/requests/addition',
-        //         fd,
-        //         //Header do tunnel
-        //         {
-        //             headers: { 'Bypass-Tunnel-Reminder': 'ablabluble', 'Content-Type': 'multipart/form-data' },
-        //             onUploadProgress: (event) => {
-        //                 console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
-        //             },
-        //         }
-        //     )
-        //     .then(() => console.log('Terminou de mandar'));
+        const sendingObject = {
+            name: strategyName,
+            aliases: aliases,
+            problem: problem,
+            forces: forces,
+            solution: solution,
+            rationale: rationale,
+            consequences: consequences,
+            examples: examples,
+            'related strategies': relatedPatterns,
+            'complementary references': references,
+            type: type,
+            ...attributesObject,
+        };
+        // console.log(sendingObject);
+        // fd.append('strategyName', strategyName);
+        // aliases.forEach((alias) => {
+        //     concatenetadAliases = concatenetadAliases + '^$22' + alias;
+        // });
+        // fd.append('aliases', concatenetadAliases);
+        // fd.append('problem', problem);
+        // fd.append('forces', forces);
+        // fd.append('solution', solution);
+        // fd.append('rationale', rationale);
+        // fd.append('consequences', consequences);
+        // fd.append('examples', examples);
+        // fd.append('relatedPatterns', relatedPatterns);
+        // fd.append('references', references);
+        // Object.entries(attributesObject).forEach(([attribute, value]) => {
+        // console.log(attribute, value);
+        // fd.append(`${attribute}`, value);
+        // });
+
+        console.log({ ...sendingObject, images: fd });
+        axios
+            .post(
+                'https://beats-tau.vercel.app/api/hello',
+                // 'http://localhost:3000/api/hello',
+                // 'https://beats.loca.lt/requests/addition',
+                { ...sendingObject, images: fd },
+                //Header do tunnel
+                {
+                    headers: { 'Bypass-Tunnel-Reminder': 'ablabluble', Authorization: `Bearer ${APIToken}` },
+                    onUploadProgress: (event) => {
+                        console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+                    },
+                }
+            )
+            .then(() => {
+                setSendingStatus('sent');
+                console.log('Terminou de mandar');
+            })
+            .catch(() => {
+                setSendingStatus('error');
+                console.log('Erro no upload');
+            });
         // const xhr = new XMLHttpRequest();
         // xhr.open('POST', 'https://beats.loca.lt/requests/addition');
         // xhr.upload.addEventListener('loadend', () => console.log('Terminou de mandar'), false);
@@ -211,13 +256,19 @@ export function StrategyForm() {
                     settingFunction={setReferences}
                 />
 
-                <button
+                {/* <button
                     type='submit'
                     className='h-12 w-6/12 rounded-md bg-beatsGreen-500 text-beatsWhite-full font-bold
                 transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsGreen-700 active:ring-brightness-125'
                 >
                     Register Strategy
-                </button>
+                </button> */}
+                <FormSendingButton
+                    navigate={navigate}
+                    resetStatus={resetStatus}
+                    sendForm={sendData}
+                    sendingStatus={sendingStatus}
+                />
             </form>
         </Container>
     );

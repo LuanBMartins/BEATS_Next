@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import { StrategyDetails } from '../../../src/components/StrategyDetails';
-import { Skeleton } from '../../../src/components/Skeleton';
-import { useFetch } from '../../../src/hooks/useFetch';
 import { useRouter } from 'next/router';
+import { Skeleton } from '../../../src/components/Skeleton';
+import { StrategyDetails } from '../../../src/components/StrategyDetails';
+import { useFetch } from '../../../src/hooks/useFetch';
 
 interface dataRetrievedType {
     a: boolean;

@@ -11,7 +11,7 @@ export default function RegisterStrategyPage() {
             <Head>
                 <title>BEATS | Register Strategy</title>
             </Head>
-            {loginData.status == 'logged-in' ? <StrategyForm /> : <GuardedRoute />}
+            {loginData.status == 'logged-in' ? <StrategyForm APIToken={loginData.token} /> : <GuardedRoute />}
         </>
     );
 }
