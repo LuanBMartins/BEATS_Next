@@ -17,7 +17,7 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
             (optionName == 'Log In' && '/login') ||
             (optionName == 'Sign Up' && '/signup') ||
             (optionName == 'Request New Strategy' && '/register-strategy') ||
-            (optionName == 'Add New Strategy' && '/register-strategy') ||
+            (optionName == 'My Requests Status' && '/my-requests') ||
             (optionName == 'About Us' && '/about') ||
             (optionName == 'Logout' && '/') ||
             '404';
@@ -31,7 +31,7 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
               })
             : null;
         // console.log(pageToNavigate, router);
-        if (optionName == 'Request New Strategy' || 'Add New Strategy') toggleOffAttributes();
+        if (optionName == 'Request New Strategy' || 'My Requests Status') toggleOffAttributes();
 
         router.push(pageToNavigate);
     }

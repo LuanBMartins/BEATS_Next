@@ -135,8 +135,8 @@ export function StrategyForm({ APIToken }: StrategyFormProps) {
         console.log({ ...sendingObject, images: fd });
         axios
             .post(
-                'https://beats-tau.vercel.app/api/hello',
-                // 'http://localhost:3000/api/hello',
+                // 'https://beats-tau.vercel.app/api/hello',
+                'http://localhost:3000/requests/addition',
                 // 'https://beats.loca.lt/requests/addition',
                 { ...sendingObject, images: fd },
                 //Header do tunnel
@@ -147,11 +147,13 @@ export function StrategyForm({ APIToken }: StrategyFormProps) {
                     },
                 }
             )
-            .then(() => {
+            .then((success) => {
+                console.log("🚀 ~ file: index.tsx:152 ~ .then ~ success", success)
                 setSendingStatus('sent');
                 console.log('Terminou de mandar');
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log("🚀 ~ file: index.tsx:157 ~ sendData ~ error", error)
                 setSendingStatus('error');
                 console.log('Erro no upload');
             });

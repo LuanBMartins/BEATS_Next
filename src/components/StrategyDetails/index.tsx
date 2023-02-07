@@ -44,11 +44,11 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
     // console.log(imageData, error && error.message);
 
     const routesToObtainImages: Array<string> = [];
-    imageData &&
-        imageData.images_name.forEach((image_link: string) => {
-            // console.log(image_link);
-            routesToObtainImages.push(`${urlApi}/strategies/${strategyData.name}/images/${image_link}`);
-        });
+    // imageData &&
+    //     imageData.images_name.forEach((image_link: string) => {
+    //         // console.log(image_link);
+    //         routesToObtainImages.push(`${urlApi}/strategies/${strategyData.name}/images/${image_link}`);
+    //     });
     // console.log(routesToObtainImages);
     // if (imageData && imageData.images_name.length > 0) {
 
