@@ -1,6 +1,11 @@
 import { ImageContainer } from '../ImageContainer';
 import { TextAreaFormFieldNoDecorator } from '../Formfields';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
+import { customApi } from '../../hooks/useFetch';
+import { strategy } from '../../interfaces/strategy';
+import { AxiosResponse, AxiosError } from 'axios';
+
 
 const statusColor = {
     waitingAdm: 'text-beatsYellow-900',
@@ -10,8 +15,24 @@ const statusColor = {
     approved: 'text-beatsGreen-900',
 };
 
-export function WaitingForAdmApprovalStrategy() {
+export function WaitingForAdmApprovalStrategy(props: any) {
+    const strategy: strategy = props.strategy
     const votingStatus = 'waitingAdm';
+    const router = useRouter()
+
+    const deleteOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const { value: protocol } = event.currentTarget;
+        customApi.methodDelete(
+          `requests/delete/${protocol}`,
+          {},
+          (response: AxiosResponse<any>) => {
+            router.push('/')
+          },
+        );
+      };
+      
+      
+
     return (
         <>
             <div className='strategy-description col-span-3'>
@@ -42,17 +63,19 @@ export function WaitingForAdmApprovalStrategy() {
                 </div>
 
                 <p className='font-bold mb-4'>
-                    Protocol Number: <span className='font-normal pl-2'>protocol data</span>
+                    Protocol Number: <span className='font-normal pl-2'>{strategy.protocol_number}</span>
                 </p>
 
                 <p className='font-bold'>
-                    Application Date: <span className='font-normal pl-2'>12/17/2021</span>
+                    Application Date: <span className='font-normal pl-2'>{new Date(strategy.date_required).toLocaleDateString()}</span>
                 </p>
             </div>
 
             <div className='strategy-buttons col-span-1'>
                 <button
                     type='button'
+                    value={strategy.protocol_number}
+                    onClick={deleteOnClick}
                     className='font-Montserrat text-xl border border-beatsWhite-900 px-6 py-2 rounded-10px w-full flex gap-2 items-center'
                 >
                     <ImageContainer
@@ -72,7 +95,8 @@ export function WaitingForAdmApprovalStrategy() {
     );
 }
 
-export function RejectedByAdminStrategy() {
+export function RejectedByAdminStrategy(props: any) {
+    const strategy: strategy = props.strategy
     const votingStatus = 'rejectedAdm';
     return (
         <>
@@ -89,22 +113,23 @@ export function RejectedByAdminStrategy() {
                 </p>
 
                 <p className='font-bold mb-4'>
-                    Admin Decision: <span className='font-normal pl-2'>protocol data</span>
+                    Admin Decision: <span className='font-normal pl-2'>{strategy.recurrence_number}</span>
                 </p>
 
                 <p className='font-bold mb-4'>
-                    Protocol Number: <span className='font-normal pl-2'>protocol data</span>
+                    Protocol Number: <span className='font-normal pl-2'>{strategy.protocol_number}</span>
                 </p>
 
                 <p className='font-bold'>
-                    Application Date: <span className='font-normal pl-2'>12/17/2021</span>
+                    Application Date: <span className='font-normal pl-2'>{strategy.date_required}</span>
                 </p>
             </div>
         </>
     );
 }
 
-export function CouncilVotingStrategy() {
+export function CouncilVotingStrategy(props: any) {
+    const strategy: strategy = props.strategy
     const votingStatus = 'councilVoting';
     return (
         <>
@@ -136,20 +161,20 @@ export function CouncilVotingStrategy() {
                 </div>
 
                 <p className='font-bold mb-4'>
-                    Protocol Number: <span className='font-normal pl-2'>protocol data</span>
+                    Protocol Number: <span className='font-normal pl-2'>{strategy.protocol_number}</span>
                 </p>
 
                 <p className='font-bold mb-4'>
-                    Number of Reviews: <span className='font-normal pl-2'>number</span>
+                    Number of Reviews: <span className='font-normal pl-2'>{strategy.recurrence_number}</span>
                 </p>
 
                 <p className='font-bold mb-4'>
-                    Application Date: <span className='font-normal pl-2'>12/17/2021</span>
+                    Application Date: <span className='font-normal pl-2'>{strategy.date_required}</span>
                 </p>
 
                 <div className='flex'>
                     <p className='font-bold'>Council Votes:</p>
-                    <span className='font-normal text-beatsGreen-700 pl-2'>NumberPositiveVotes </span>
+                    <span className='font-normal text-beatsGreen-700 pl-2'> {strategy.accept_with_suggestions_count} </span>
                     <ImageContainer
                         vertical=''
                         horizontal=''
@@ -196,7 +221,8 @@ export function CouncilVotingStrategy() {
     );
 }
 
-export function ReviewSuggestedStrategy() {
+export function ReviewSuggestedStrategy(props: any) {
+    const strategy: strategy = props.strategy
     const votingStatus = 'reviewSuggested';
     return (
         <>
@@ -228,15 +254,15 @@ export function ReviewSuggestedStrategy() {
                 </div>
 
                 <p className='font-bold mb-4'>
-                    Protocol Number: <span className='font-normal pl-2'>protocol data</span>
+                    Protocol Number: <span className='font-normal pl-2'>{strategy.protocol_number}</span>
                 </p>
 
                 <p className='font-bold mb-4'>
-                    Number of Reviews: <span className='font-normal pl-2'>number</span>
+                    Number of Reviews: <span className='font-normal pl-2'>{strategy.recurrence_number}</span>
                 </p>
 
                 <p className='font-bold mb-4'>
-                    Application Date: <span className='font-normal pl-2'>12/17/2021</span>
+                    Application Date: <span className='font-normal pl-2'>{strategy.date_required}</span>
                 </p>
 
                 <div className='flex'>
@@ -308,7 +334,7 @@ export function ReviewSuggestedStrategy() {
     );
 }
 
-export function ApprovedStrategy() {
+export function ApprovedStrategy(props: any) {
     const votingStatus = 'approved';
     return (
         <>
@@ -343,7 +369,7 @@ export function ApprovedStrategy() {
     );
 }
 
-export function StrategyInAdminPage() {
+export function StrategyInAdminPage(props: any) {
     const votingStatus = 'reviewSuggested';
 
     const [commentary, setCommentary] = useState('');
@@ -469,7 +495,7 @@ export function StrategyInAdminPage() {
     );
 }
 
-export function StrategyInCouncilPage() {
+export function StrategyInCouncilPage(props: any) {
     const votingStatus = 'reviewSuggested';
 
     return (

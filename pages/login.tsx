@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Head from 'next/head';
+import { login } from './api/Auth';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useGlobalData } from '../contexts/GlobalDataContext';
@@ -30,17 +31,15 @@ export default function LoginPage() {
         e.preventDefault();
         const dataToSend = { username, password };
         const headers = {
-            'content-type': 'application/json',
-            //Header do tunnel
-            'Bypass-Tunnel-Reminder': 'ablabluble',
+            'content-type': 'application/json'
         };
-        // console.log({ ...dataToSend });
+
         const finalURL = `${urlApi}/login`;
         axios
             .post(finalURL, dataToSend, { headers })
             .then((dataReceivedFromAPI) => {
                 const rawData: dataFromAPIType = dataReceivedFromAPI.data;
-                console.log(dataReceivedFromAPI);
+                login(rawData.access_token, rawData.username)
                 setLoginData({
                     status: 'logged-in',
                     token: rawData.access_token,
@@ -50,7 +49,6 @@ export default function LoginPage() {
                 router.push('/');
             })
             .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
-        // router.push('/signup');
     }
 
     return (

@@ -1,6 +1,8 @@
 import axios from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
 import useSWR from 'swr';
 import { urlApi } from './environments';
+import { getToken } from '../../pages/api/Auth';
 
 function timeout(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -49,7 +51,10 @@ export const useFetch = (receivedURL: string, refreshInterval = 0) => {
     const api = axios.create({
         baseURL: urlApi,
         //Header do tunnel
-        headers: { 'Bypass-Tunnel-Reminder': 'ablabluble' },
+        
+        headers: { 
+            Authorization: `Bearer ${getToken()}`
+         },
     });
     // const finalURL = baseURL + receivedURL;
 
@@ -74,3 +79,37 @@ export const useFetch = (receivedURL: string, refreshInterval = 0) => {
 
     // return data;
 };
+
+
+const executeNew = (obj: any, success: (value: AxiosResponse<any>) => void, error?: (error: AxiosError<any>) => AxiosResponse<any> | Promise<AxiosResponse<any>>) => {
+    const api = axios.create({
+        baseURL: urlApi,
+        headers: { 
+            Authorization: `Bearer ${getToken()}`
+        },
+    });
+    
+    const response =  api.request(obj)
+        .then(success)
+        .catch(error)
+}
+
+export const customApi = {
+    methodGet: (url: string, data: any = {}, success: (value: AxiosResponse<any>) => void, error?: (error: AxiosError<any>) => AxiosResponse<any> | Promise<AxiosResponse<any>>) => executeNew({method: "GET", url: url, data: data}, success, error),
+
+    methodPut: (url: string, data: any = {}, success: (value: AxiosResponse<any>) => void, error?: (error: AxiosError<any>) => AxiosResponse<any> | Promise<AxiosResponse<any>>) => executeNew({method: "PUT", url: url, data: data}, success, error),
+
+    methodPost: (url: string, data: any = {}, success: (value: AxiosResponse<any>) => void, error?: (error: AxiosError<any>) => AxiosResponse<any> | Promise<AxiosResponse<any>>) => executeNew({method: "POST", url: url, data: data}, success, error),
+
+    methodPatch: (url: string, data: any = {}, success: (value: AxiosResponse<any>) => void, error?: (error: AxiosError<any>) => AxiosResponse<any> | Promise<AxiosResponse<any>>) => executeNew({method: "PATCH", url: url, data: data}, success, error),
+
+    methodDelete: (url: string, data: any = {}, success: (value: AxiosResponse<any>) => void, error?: (error: AxiosError<any>) => AxiosResponse<any> | Promise<AxiosResponse<any>>) => executeNew({method: "DELETE", url: url, data: data}, success, error)
+}
+
+
+
+  
+
+
+
+
