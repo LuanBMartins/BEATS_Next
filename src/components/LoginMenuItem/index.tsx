@@ -15,6 +15,7 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
     function navigateOnClick(e: any) {
         const pageToNavigate =
             (optionName == 'Log In' && '/login') ||
+            (optionName == 'strategy requests' && '/strategy-requests') ||
             (optionName == 'Sign Up' && '/signup') ||
             (optionName == 'Request New Strategy' && '/register-strategy') ||
             (optionName == 'My Requests Status' && '/my-requests') ||

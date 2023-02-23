@@ -119,6 +119,7 @@ function AdministratorTypeList({ username }: loggedUserProps) {
             <ul>
                 <LoginMenuItem iconName='person_outline' optionName='Profile' />
                 <LoginMenuItem iconName='person_search' optionName='Search Users' />
+                <LoginMenuItem iconName='info' optionName='strategy requests'/>
                 <LoginMenuItem iconName='add' optionName='Add New Strategy' />
                 <LoginMenuItem iconName='logout' optionName='Logout' />
             </ul>

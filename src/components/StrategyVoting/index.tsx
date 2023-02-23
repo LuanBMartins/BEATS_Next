@@ -95,6 +95,79 @@ export function WaitingForAdmApprovalStrategy(props: any) {
     );
 }
 
+export function WaitingForAdmApprovalStrategyContext(props: any) {
+    const strategy: strategy = props.strategy
+    const votingStatus = 'waitingAdm';
+    const router = useRouter()
+
+    const visualizeOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+            router.push('/strategy-requests/' + strategy.protocol_number)
+    };
+      
+      
+
+    return (
+        <>
+            <div className='strategy-description col-span-3'>
+                <h3
+                    className='font-Montserrat text-2xl relative mb-6 ml-4
+                before:absolute before:bg-beatsGreen-700 before:h-2 before:w-2 before:block before:top-3 before:-left-4 before:rounded-md'
+                >
+                    Title
+                </h3>
+
+                <div className='flex mb-4'>
+                    <p className='font-bold'>
+                        Status:
+                        <span className={`${statusColor[votingStatus]} font-normal pl-2 align-middle`}>
+                            Waiting for approval 
+                        </span>
+                    </p>
+                    <ImageContainer
+                        vertical=''
+                        horizontal=''
+                        width={18}
+                        height={18}
+                        localization='/Material Icons/clock.svg'
+                        alt=''
+                        position=''
+                        background='ml-1 flex justify-center items-center'
+                    />
+                </div>
+
+                <p className='font-bold mb-4'>
+                    Protocol Number: <span className='font-normal pl-2'>{strategy.protocol_number}</span>
+                </p>
+
+                <p className='font-bold'>
+                    Application Date: <span className='font-normal pl-2'>{new Date(strategy.date_required).toLocaleDateString()}</span>
+                </p>
+            </div>
+
+            <div className='strategy-buttons col-span-1'>
+                <button
+                    type='button'
+                    value={strategy.protocol_number}
+                    onClick={visualizeOnClick}
+                    className='font-Montserrat text-xl border border-beatsWhite-900 px-6 py-2 rounded-10px w-full flex gap-2 items-center'
+                >
+                    <ImageContainer
+                        vertical=''
+                        horizontal=''
+                        width={24}
+                        height={24}
+                        localization='/Material Icons/search.svg'
+                        alt=''
+                        position=''
+                        background='flex justify-center items-center'
+                    />{' '}
+                    Visualize
+                </button>
+            </div>
+        </>
+    );
+}
+
 export function RejectedByAdminStrategy(props: any) {
     const strategy: strategy = props.strategy
     const votingStatus = 'rejectedAdm';
