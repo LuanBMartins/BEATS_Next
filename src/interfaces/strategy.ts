@@ -1,4 +1,5 @@
 export interface strategy {
+    name: string
     protocol_number: string,
     date_required: string,
     type: number,

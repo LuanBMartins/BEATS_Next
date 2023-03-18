@@ -52,11 +52,6 @@ export default function MyStrategies() {
                         <div></div>
                     )
                 }
-                {/* <WaitingForAdmApprovalStrategy />
-                <RejectedByAdminStrategy />
-                <CouncilVotingStrategy />
-                <ReviewSuggestedStrategy />
-                <ApprovedStrategy /> */}
             </div>
         </Container>
     );
