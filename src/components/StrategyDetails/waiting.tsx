@@ -1,9 +1,13 @@
 import Image from 'next/image';
 import { Commentaries } from '../../components/Commentaries';
 import { urlApi } from '../../hooks/environments';
-import { useFetch } from '../../hooks/useFetch';
+import { customApi, useFetch } from '../../hooks/useFetch';
 import { InfoSecAttributesOnSearchResult, TextAreaFormField, TextFormField } from '../Formfields';
 import { RadioSelectorInStrategyDetails } from '../RadioSelector';
+import React from 'react';
+import { AxiosResponse } from 'axios';
+import { useRouter } from 'next/router';
+
 
 interface dataRetrievedType {
     a: boolean;
@@ -30,59 +34,83 @@ interface dataRetrievedType {
 }
 
 export interface StrategyData {
-    
-        request: {
-            username: string,
-            data_solicitacao: string,
-            tipo_solicitacao: number,
-            nro_protocolo: string,
-            estado: number,
-            administrador: number,
-            voto_admin: number,
-            texto_rejeicao: string,
-            texto_edicao: string,
-            estrategia_referente: string,
-            architecture_strategy: {
-                id: number,
-                name: string,
-                type: number,
-                c: true | false,
-                i: true | false,
-                a: true | false,
-                authn: true | false,
-                authz: true | false,
-                acc: true | false,
-                nr: true | false,
-                username_creator: string,
-                publish_date: string,
-                problem: string,
-                context?: string,
-                forces?: string,
-                solution?: string,
-                rationale?: string,
-                consequences?: string,
-                examples?: string,
-                related_strategies?: string,
-                complementary_references?: string,
-                accepted: number
-            }
-        };
-    
+
+    request: {
+        username: string,
+        data_solicitacao: string,
+        tipo_solicitacao: number,
+        nro_protocolo: string,
+        estado: number,
+        administrador: number,
+        voto_admin: number,
+        texto_rejeicao: string,
+        texto_edicao: string,
+        estrategia_referente: string,
+        architecture_strategy: {
+            id: number,
+            name: string,
+            type: number,
+            c: true | false,
+            i: true | false,
+            a: true | false,
+            authn: true | false,
+            authz: true | false,
+            acc: true | false,
+            nr: true | false,
+            username_creator: string,
+            publish_date: string,
+            problem: string,
+            context?: string,
+            forces?: string,
+            solution?: string,
+            rationale?: string,
+            consequences?: string,
+            examples?: string,
+            related_strategies?: string,
+            complementary_references?: string,
+            accepted: number
+        }
+    };
+
 }
 
 export default function WaitingStrategyDetails({ strategyData }: any) {
-
+    const router = useRouter()
     const { request }: StrategyData = strategyData
-    const attributesObject = { 
-        a: request.architecture_strategy.a, 
-        acc: request.architecture_strategy.acc, 
-        authn: request.architecture_strategy.authn, 
+    const attributesObject = {
+        a: request.architecture_strategy.a,
+        acc: request.architecture_strategy.acc,
+        authn: request.architecture_strategy.authn,
         authz: request.architecture_strategy.authz,
-        c: request.architecture_strategy.c, 
-        i: request.architecture_strategy.i, 
-        nr: request.architecture_strategy.nr 
+        c: request.architecture_strategy.c,
+        i: request.architecture_strategy.i,
+        nr: request.architecture_strategy.nr
     };
     const formatedDate = new Date().toLocaleString('en-US');
+    
+    const requestChangeClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        customApi.methodPost(
+            `vote/${request.nro_protocolo}`,
+            {
+                "vote": "REJECT"
+            },
+            ((response: AxiosResponse<any>) => {
+                router.push('/strategy-requests')
+            })
+        )
+    }
+
+    const approveClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        customApi.methodPost(
+            `vote/${request.nro_protocolo}`,
+            {
+                "vote": "ACCEPT"
+            },
+            ((response: AxiosResponse<any>) => {
+                router.push('/strategy-requests')
+            })
+        )
+    }
 
     const routesToObtainImages: Array<string> = [];
 
@@ -155,11 +183,21 @@ export default function WaitingStrategyDetails({ strategyData }: any) {
                 <div className='border border-beatsGreen-700 rounded-10px p-6 col-start-4 col-span-1 w-3/4 mx-auto h-60'>
                     <button
                         type='submit'
+                        onClick={requestChangeClick}
                         className='h-12 w-full rounded-md bg-beatsGreen-500 text-beatsWhite-full font-bold mb-4
                 transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsGreen-700 active:ring-brightness-125'
                     >
                         Request Changes
                     </button>
+                    <button
+                        type='submit'
+                        onClick={approveClick}
+                        className='h-12 w-full rounded-md bg-beatsGreen-500 text-beatsWhite-full font-bold mb-4
+                transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsGreen-700 active:ring-brightness-125'
+                    >
+                        Approve
+                    </button>
+
                     <div className='mb-4'>
                         <p className='font-bold'>Author:</p>
                         <p className=''>{request.architecture_strategy.username_creator}</p>
@@ -169,6 +207,7 @@ export default function WaitingStrategyDetails({ strategyData }: any) {
                         <p className=''>{formatedDate}</p>
                     </div>
                 </div>
+
             </main>
         </>
     );

@@ -13,7 +13,6 @@ export default function StrategyDetailsPage() {
         customApi.methodGet(`requests/${param}`,
             {},
             (response: AxiosResponse<any>) => {
-                console.log("🚀 ~ file: [index].tsx:16 ~ useEffect ~ response.data:", response.data)
                 setStrategy(response.data)
             })
     }, [])

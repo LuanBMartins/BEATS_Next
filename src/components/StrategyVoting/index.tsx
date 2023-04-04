@@ -104,11 +104,9 @@ export function WaitingForAdmApprovalStrategyContext(props: any) {
     const router = useRouter()
 
     const visualizeOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        router.push('/strategy-requests/' + strategy.protocol_number)
+        router.push('/strategy-requests/' + strategy.relating_strategy)
     };
       
-      
-
     return (
         <>
             <div className='strategy-description col-span-3'>
@@ -116,7 +114,7 @@ export function WaitingForAdmApprovalStrategyContext(props: any) {
                     className='font-Montserrat text-2xl relative mb-6 ml-4
                 before:absolute before:bg-beatsGreen-700 before:h-2 before:w-2 before:block before:top-3 before:-left-4 before:rounded-md'
                 >
-                    Title
+                    {strategy.name}
                 </h3>
 
                 <div className='flex mb-4'>
