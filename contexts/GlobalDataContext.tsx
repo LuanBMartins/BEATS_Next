@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 interface securityInformationItems {
     confidentiality: boolean;
@@ -56,6 +57,7 @@ type GlobalDataContextProviderProps = {
 };
 
 export function GlobalDataContextProvider({ children }: GlobalDataContextProviderProps) {
+    const router = useRouter();
     const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
     const [termToSearch, setTermToSearch] = useState('');
     const [searchedType, setSearchedType] = useState('tactic');
@@ -75,14 +77,14 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         username: '',
     } as loginData);
 
-    // useEffect(() => {
-    //     console.log(termToSearch);
-    // console.log(searchedType);
-    // console.log(securityInformationAttributes);
-    // }, [securityInformationAttributes]);
-    // }, [searchedType]);
-    // }, [termToSearch]);
-    // }, [termToSearch]);
+    useEffect(() => {
+        if(router.pathname === '/')
+            return
+
+        const URLtoSearch = generateRoute();
+        router.push(URLtoSearch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchedType, securityInformationAttributes])
 
     function toggleSecurityInformationAttributes(receivedAttribute: string) {
         const newState = {} as securityInformationItems;

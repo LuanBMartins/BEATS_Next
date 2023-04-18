@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { useGlobalData } from '../../../contexts/GlobalDataContext';
+import { useRouter } from 'next/router';
 
 interface RadioSelectorProps {
     extraCSSClass?: string;
@@ -15,7 +16,8 @@ interface RadioSelectorInRegisterStrategy {
 }
 
 export function RadioSelector({ extraCSSClass }: RadioSelectorProps) {
-    const { searchedType, setSearchedType } = useGlobalData();
+    const { searchedType, setSearchedType, generateRoute } = useGlobalData();
+    const router = useRouter();
 
     function changeCheck(e: any) {
         setSearchedType(e.target.value);

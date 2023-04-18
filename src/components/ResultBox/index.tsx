@@ -4,6 +4,7 @@ import { InfoSecAttributesOnSearchResult } from '../Formfields';
 import { useRouter } from 'next/router';
 
 export interface resultsItemProps {
+    id: number;
     a: boolean;
     acc: boolean;
     aliases: Array<string> | [];
@@ -22,11 +23,11 @@ interface routingDataProps {
 export function ResultBox({ strategy }: routingDataProps) {
     const router = useRouter();
 
-    const { a, acc, aliases, authn, authz, c, i, name, nr, type } = strategy;
+    const { a, acc, aliases, authn, authz, c, i, name, nr, type, id } = strategy;
     const attributesObject = { a, acc, authn, authz, c, i, nr };
 
     function click() {
-        router.push(`/strategies/${name}`);
+        router.push(`/strategies/${id}`);
     }
     // console.log(currentURL);
 
@@ -46,17 +47,17 @@ export function ResultBox({ strategy }: routingDataProps) {
                 <div className='skeleton-infos flex-1 space-y-4 px-12'>
                     <p className='text-base font-SourceSans'>
                         <span className='font-bold'>Type: </span>
-                        {type}
+                        {type == '1' ? 'Pattern': 'Tactic'}
                     </p>
                     <p className='font-bold'>
-                        Aliases:{'  '}
-                        {aliases.map((alias: string) => {
+                      
+                        {/* {aliases.map((alias: string) => {
                             return (
                                 <span key={alias} className='text-base font-SourceSans italic font-normal'>
                                     {alias}{' '}
                                 </span>
                             );
-                        })}
+                        })} */}
                     </p>
                     <InfoSecAttributesOnSearchResult fieldName='A' searchResultAttributesObject={attributesObject} />
                 </div>

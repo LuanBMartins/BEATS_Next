@@ -20,12 +20,8 @@ export function Header() {
     function navigateOnSearchClicked(e: any) {
         e.preventDefault();
 
-        // console.log('alo porra');
-        // console.log(isTermToSearchEmpty());
         if (isTermToSearchEmpty() == false) {
             const URLtoSearch = generateRoute();
-
-            // console.log(URLtoSearch);
             router.push(URLtoSearch);
         }
     }

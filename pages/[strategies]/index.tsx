@@ -38,9 +38,7 @@ export default function StrategyDetailsPage() {
 
     // Splitting the mounted URL, taking off the / character to get just the query to send to the API
     const route = router.asPath.split('/')[1];
-    // console.log(router);
     const { data, error } = useFetch(route);
-    // console.log(data, route, router);
 
     if (router.isFallback || !data) {
         return (
@@ -68,10 +66,11 @@ export default function StrategyDetailsPage() {
             <Head>
                 <title>BEATS | Result</title>
             </Head>
-            {data.strategies.length > 0 ? (
-                data.strategies.map((resultItem: resultsItemProps) => {
-                    return <ResultBox key={resultItem.name} strategy={resultItem} />;
+            {data.strategies.rows.length > 0 ? (
+                data.strategies.rows.map((resultItem: resultsItemProps) => {
+                    return <ResultBox key={resultItem.id} strategy={resultItem} />;
                 })
+                
             ) : (
                 <Container
                     containerType='main'
