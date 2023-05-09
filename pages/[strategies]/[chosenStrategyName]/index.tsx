@@ -33,11 +33,7 @@ export default function StrategyDetailsPage() {
 
     const routeToFetch = router.asPath.slice(1);
     const { data, error } = useFetch(routeToFetch);
-    // console.log(data, error);
-
-    // console.log(routeToFetch + '/comments');
     const { data: commentaryData, error: commentaryError } = useFetch(routeToFetch + '/comments', 500);
-    // console.log(commentaryData.comments, commentaryError);
 
     if (router.isFallback || !data) {
         return (

@@ -141,7 +141,7 @@ export function StrategyForm({ APIToken }: StrategyFormProps) {
                 { ...sendingObject, images: fd },
                 //Header do tunnel
                 {
-                    headers: { 'Bypass-Tunnel-Reminder': 'ablabluble', Authorization: `Bearer ${APIToken}` },
+                    headers: { Authorization: `Bearer ${APIToken}` },
                     onUploadProgress: (event) => {
                         console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
                     },

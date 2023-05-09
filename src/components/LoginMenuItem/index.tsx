@@ -11,7 +11,7 @@ interface LoginMenuItemsProps {
 export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
     const router = useRouter();
     const { toggleOffAllSecurityInformationAttributes: toggleOffAttributes, setLoginData } = useGlobalData();
-
+    
     function navigateOnClick(e: any) {
         const pageToNavigate =
             (optionName == 'Log In' && '/login') ||
@@ -31,9 +31,6 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
                   username: '',
               })
             : null;
-        // console.log(pageToNavigate, router);
-        if (optionName == 'Request New Strategy' || 'My Requests Status') toggleOffAttributes();
-
         router.push(pageToNavigate);
     }
 

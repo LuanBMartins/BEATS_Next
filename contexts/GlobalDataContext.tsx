@@ -60,6 +60,7 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
     const router = useRouter();
     const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
     const [termToSearch, setTermToSearch] = useState('');
+    const [teste, setTeste] = useState('');
     const [searchedType, setSearchedType] = useState('tactic');
     const [securityInformationAttributes, setSecurityInformationAttributes] = useState<securityInformationItems>({
         confidentiality: false,
@@ -83,8 +84,14 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
 
         const URLtoSearch = generateRoute();
         router.push(URLtoSearch);
+        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchedType, securityInformationAttributes])
+
+    function setTypeStrategy(type: string){
+        setSearchedType(type)
+        console.log('a');
+    }
 
     function toggleSecurityInformationAttributes(receivedAttribute: string) {
         const newState = {} as securityInformationItems;
@@ -104,6 +111,7 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
         Object.keys(securityInformationAttributes).map((key) => {
             return (newState[key as keyof securityInformationItems] = false);
         });
+        
         setSecurityInformationAttributes(newState);
     }
 
@@ -154,11 +162,7 @@ export function GlobalDataContextProvider({ children }: GlobalDataContextProvide
     }
 
     function isTermToSearchEmpty() {
-        // console.log(termToSearch);
-        // console.log(termToSearch.match(/^\s+$/) !== null);
-        // console.log(termToSearch == '');
         return !termToSearch || termToSearch === '' || termToSearch.match(/^\s+$/) !== null ? true : false;
-        // return false;
     }
 
     function allAttributesFalse() {
