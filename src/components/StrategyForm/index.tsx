@@ -108,8 +108,8 @@ export function StrategyForm({ APIToken }: StrategyFormProps) {
             rationale: rationale,
             consequences: consequences,
             examples: examples,
-            'related strategies': relatedPatterns,
-            'complementary references': references,
+            related_strategies: relatedPatterns,
+            complementary_references: references,
             type: type,
             ...attributesObject,
         };
