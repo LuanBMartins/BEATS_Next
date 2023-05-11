@@ -255,15 +255,14 @@ export function ImageFormField({ fieldName, settingFunction }: fieldProps) {
         else if (listOfFilesReturned.length > 10) {
             setBoxMessage('You have selected more than 10 files, attaching the first ones.');
             const finalArray = listOfFilesReturned.slice(0, 10) as Array<File>;
-            setUploadedFiles(finalArray);
+            settingFunction ? settingFunction(finalArray) : null;
         } else if (listOfFilesReturned.length == 1) {
             setBoxMessage('1 File selected:');
             const finalArray = listOfFilesReturned.slice(0, 1) as Array<File>;
-            setUploadedFiles(finalArray);
+            settingFunction ? settingFunction(finalArray) : null;
         } else if (listOfFilesReturned.length >= 2 && listOfFilesReturned.length <= 10) {
             setBoxMessage(`${listOfFilesReturned.length} Files selected:`);
             const finalArray = listOfFilesReturned.slice(0, listOfFilesReturned.length) as Array<File>;
-            setUploadedFiles(finalArray);
             settingFunction ? settingFunction(finalArray) : null;
         }
     }
