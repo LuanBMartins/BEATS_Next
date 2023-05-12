@@ -8,7 +8,7 @@ import { RadioSelectorInStrategyDetails } from '../RadioSelector';
 interface dataRetrievedType {
     a: boolean;
     acc: boolean;
-    aliases: Array<string>;
+    
     authn: boolean;
     authz: boolean;
     c: boolean;
@@ -27,6 +27,12 @@ interface dataRetrievedType {
     solution: string;
     type: string;
     username_creator: string;
+    images: { file: any }[];
+    aliases: {
+        id: number,
+        strategy_id: number,
+        name: string
+    }[]
 }
 
 interface strategyDataProp {
@@ -38,38 +44,12 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
     const { a, acc, aliases, authn, authz, c, i, nr, type, complementary_references: references } = strategyData;
     const attributesObject = { a, acc, authn, authz, c, i, nr };
     const formatedDate = new Date(strategyData.publish_date).toLocaleString('en-US');
-
-    // const routeToCheckImages = `/strategies/${strategyData.name}/images`;
-    // const { data: imageData, error } = useFetch(routeToCheckImages);
-    // // console.log(imageData, error && error.message);
-
-    // const routesToObtainImages: Array<string> = [];
-    // // imageData &&
-    // //     imageData.images_name.forEach((image_link: string) => {
-    // //         // console.log(image_link);
-    // //         routesToObtainImages.push(`${urlApi}/strategies/${strategyData.name}/images/${image_link}`);
-    // //     });
-    // // console.log(routesToObtainImages);
-    // // if (imageData && imageData.images_name.length > 0) {
-
-    // // const routeToObtainImages = []
-    // // imageData.images_name.forEach(() => {
-    // //     { data: imageData, error } = useFetch(routeToCheckImages)
-    // // })
-    // // }
-
-    // // const [strategyName, setStrategyName] = useState('');
-    // // const [aliases, setAliases] = useState('');
-    // // const [problem, setProblem] = useState('');
-    // // const [forces, setForces] = useState('');
-    // // const [images, setImages] = useState([] as Array<File>);
-    // // const [solution, setSolution] = useState('');
-    // // const [rationale, setRationale] = useState('');
-    // // const [consequences, setConsequences] = useState('');
-    // // const [examples, setExamples] = useState('');
-    // // const [relatedPatterns, setRelatedPatterns] = useState('');
-    // // const [references, setReferences] = useState('');
-    // // console.log(strategyData);
+    
+    const images = strategyData.images.map(({ file }) => {
+        const imageData = Buffer.from(file, 'binary').toString('base64')
+        const imageUrl = `data:image/png;base64,${imageData}`
+        return imageUrl
+    })    
 
     return (
         <>
@@ -83,17 +63,20 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
                         className='font-bold relative block ml-4
                 before:absolute before:bg-beatsGreen-700 before:h-2 before:w-2 before:block before:top-2 before:-left-4 before:rounded-md'
                     >
-                        {/* Aliases:{'  '}
-                        {aliases.map((alias: string) => {
-                            return (
-                                <span key={alias} className='text-base font-SourceSans italic font-normal'>
-                                    {alias}{' '}
-                                </span>
-                            );
-                        })} */}
+                        Aliases:{'  '}<br></br>
+                        {
+                            aliases.length > 0 ?
+                            aliases.map((alias) => {
+                                return (
+                                    <span key={alias.id} className='text-base font-SourceSans italic font-normal'>
+                                        {alias.name}<br></br>
+                                    </span>
+                                );
+                            }) : <div></div>
+                        }
                     </p>
 
-                    <RadioSelectorInStrategyDetails receivedType={type} />
+                    {/* <RadioSelectorInStrategyDetails receivedType={'type'} /> */}
 
                     <InfoSecAttributesOnSearchResult
                         fieldName='Attributes'
@@ -106,10 +89,9 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
 
                     <TextAreaFormField disabled={true} fieldName='Solution' fieldValue={strategyData.solution} />
 
-                    {/* If there are images (length > 0), insert a div container to the images. Map through images generating subdivs for each image */}
-                    {/* {routesToObtainImages.length > 0 ? (
+                    {images.length > 0 ? (
                         <div className='images-container flex h-80max-h-80 gap-12 flex-wrap'>
-                            {routesToObtainImages.map((imageLink, index) => {
+                            {images.map((imageLink, index) => {
                                 return (
                                     <div key={index} className='w-2/5 h-80 relative'>
                                         <Image src={imageLink} alt='' layout='fill' placeholder='empty' />
@@ -117,7 +99,7 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
                                 );
                             })}
                         </div>
-                    ) : null} */}
+                    ) : null}
 
                     <TextFormField disabled={true} fieldName='Rationale' fieldValue={strategyData.rationale} />
 

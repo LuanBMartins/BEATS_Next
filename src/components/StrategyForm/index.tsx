@@ -50,10 +50,6 @@ export function StrategyForm({ APIToken }: StrategyFormProps) {
     });
     const router = useRouter();
 
-    // useEffect(() => {
-    //     console.log(attributesObject);
-    // }, [attributesObject]);
-
     function toggleAttributesObject(attributeName: string) {
         const conversion = {
             confidentiality: 'c',
@@ -91,17 +87,11 @@ export function StrategyForm({ APIToken }: StrategyFormProps) {
         e.preventDefault();
         setSendingStatus('loading');
 
-        const fd = new FormData();
         // let concatenetadAliases: string = '';
 
-        images.forEach((image) => {
-            fd.append('image', image, image.name);
-        });
-        // fd.append('image', images[0], images[0].name);
-
-        const sendingObject = {
+        const sendingObject: Record<string, any> = {
             name: strategyName,
-            aliases: aliases,
+            aliases:  JSON.stringify(aliases),
             problem: problem,
             forces: forces,
             solution: solution,
@@ -111,35 +101,22 @@ export function StrategyForm({ APIToken }: StrategyFormProps) {
             related_strategies: relatedPatterns,
             complementary_references: references,
             type: type,
+            images: images,
             ...attributesObject,
         };
-        // console.log(sendingObject);
-        // fd.append('strategyName', strategyName);
-        // aliases.forEach((alias) => {
-        //     concatenetadAliases = concatenetadAliases + '^$22' + alias;
-        // });
-        // fd.append('aliases', concatenetadAliases);
-        // fd.append('problem', problem);
-        // fd.append('forces', forces);
-        // fd.append('solution', solution);
-        // fd.append('rationale', rationale);
-        // fd.append('consequences', consequences);
-        // fd.append('examples', examples);
-        // fd.append('relatedPatterns', relatedPatterns);
-        // fd.append('references', references);
-        // Object.entries(attributesObject).forEach(([attribute, value]) => {
-        // console.log(attribute, value);
-        // fd.append(`${attribute}`, value);
-        // });
 
-        console.log({ ...sendingObject, images: fd });
+        const formData = new FormData();
+        Object.keys(sendingObject).forEach((key: string) => {
+            formData.append(key, sendingObject[key]);
+        });
+        images.forEach((image) => {
+            formData.append('images', image, image.name);
+        });
+        
         axios
             .post(
-                // 'https://beats-tau.vercel.app/api/hello',
                 'http://localhost:3000/requests/addition',
-                // 'https://beats.loca.lt/requests/addition',
-                { ...sendingObject, images: fd },
-                //Header do tunnel
+                formData,
                 {
                     headers: { Authorization: `Bearer ${APIToken}` },
                     onUploadProgress: (event) => {
