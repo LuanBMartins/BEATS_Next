@@ -8,7 +8,7 @@ import { RadioSelectorInStrategyDetails } from '../RadioSelector';
 interface dataRetrievedType {
     a: boolean;
     acc: boolean;
-    
+    id: number;
     authn: boolean;
     authz: boolean;
     c: boolean;
@@ -138,7 +138,7 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
                 </div>
             </main>
 
-            <Commentaries strategyName={strategyData.name} commentaries={commentaries} />
+            <Commentaries strategyId={strategyData.id} commentaries={commentaries} />
         </>
     );
     

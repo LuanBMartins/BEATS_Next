@@ -2,13 +2,12 @@ import Image from 'next/image';
 import { useGlobalData } from '../../../contexts/GlobalDataContext';
 import axios from 'axios';
 import { urlApi } from '../../hooks/environments';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { AddOrEditCommentariesFormField } from '../Formfields';
-import { mutate } from 'swr';
 
 interface commentaryProps {
     commentaries: any;
-    strategyName: string;
+    strategyId: number;
 }
 
 interface baseCommentaryProps {
@@ -17,7 +16,7 @@ interface baseCommentaryProps {
     id: 'string';
     replies?: Array<any>;
     text: 'string';
-    strategyName: string;
+    strategyId: number;
 }
 
 interface responseCommentaryProps {
@@ -25,21 +24,14 @@ interface responseCommentaryProps {
     date: Date;
     text: string;
     id: string;
-    strategyName: string;
+    strategyId: number;
 }
 
-// function deleteComment(id: string, commentary: string, token: string, strategyname: string) {
-//     const dataToSend = { text: commentary };
-// console.log({
-//     headers: headers,
-//     data: dataToSend,
-// });
-
-function deleteComment(id: string, token: string, strategyname: string) {
+function deleteComment(id: string, token: string, strategyId: number) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
-    const finalURL = `${urlApi}/strategies/${strategyname}/comments/${id}`;
+    const finalURL = `${urlApi}/strategies/${strategyId}/comments/${id}`;
     axios
         .delete(finalURL, {
             headers: headers,
@@ -50,11 +42,11 @@ function deleteComment(id: string, token: string, strategyname: string) {
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-function editComment(id: string, token: string, strategyname: string, comment: string) {
+function editComment(id: string, token: string, strategyId: number, comment: string) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
-    const finalURL = `${urlApi}/strategies/${strategyname}/comments/${id}`;
+    const finalURL = `${urlApi}/strategies/${strategyId}/comments/${id}`;
     axios
         .put(
             finalURL,
@@ -71,11 +63,11 @@ function editComment(id: string, token: string, strategyname: string, comment: s
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-function addBaseComment(token: string, strategyname: string, comment: string) {
+function addBaseComment(token: string, strategyId: number, comment: string) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
-    const finalURL = `${urlApi}/strategies/${strategyname}/comments`;
+    const finalURL = `${urlApi}/strategies/${strategyId}/comments`;
     axios
         .post(
             finalURL,
@@ -92,11 +84,11 @@ function addBaseComment(token: string, strategyname: string, comment: string) {
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-function addResponseComment(id: string, token: string, strategyname: string, comment: string) {
+function addResponseComment(id: string, token: string, strategyId: number, comment: string) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
-    const finalURL = `${urlApi}/strategies/${strategyname}/comments/${id}`;
+    const finalURL = `${urlApi}/strategies/${strategyId}/comments/${id}`;
     axios
         .post(
             finalURL,
@@ -113,15 +105,14 @@ function addResponseComment(id: string, token: string, strategyname: string, com
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-export function Commentaries({ commentaries, strategyName }: commentaryProps) {
-    // console.log(commentaries && commentaries.comments);
+export function Commentaries({ commentaries, strategyId }: commentaryProps) {
     const { loginData } = useGlobalData();
 
     const [newComment, setNewComment] = useState('');
     const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
 
     function handleSendNewBaseComment() {
-        addBaseComment(loginData.token, strategyName, newComment);
+        addBaseComment(loginData.token, strategyId, newComment);
     }
 
     const isUserLoggedIn = loginData.status == 'logged-in' ? true : false;
@@ -169,7 +160,7 @@ export function Commentaries({ commentaries, strategyName }: commentaryProps) {
                                 text={commentary.text}
                                 replies={commentary.replies}
                                 id={commentary.id}
-                                strategyName={strategyName}
+                                strategyId={strategyId}
                             />
                         );
                     })}
@@ -180,7 +171,7 @@ export function Commentaries({ commentaries, strategyName }: commentaryProps) {
     );
 }
 
-function BaseCommentary({ author, date, text, replies, id, strategyName }: baseCommentaryProps) {
+function BaseCommentary({ author, date, text, replies, id, strategyId }: baseCommentaryProps) {
     const [newComment, setNewComment] = useState('');
     const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
 
@@ -199,11 +190,11 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
         loginData.username == author || loginData.userType == 'Administrator' ? true : false;
 
     function handleSendResponseComment() {
-        addResponseComment(id, loginData.token, strategyName, newComment);
+        addResponseComment(id, loginData.token, strategyId, newComment);
     }
 
     function handleSendEdit() {
-        editComment(id, loginData.token, strategyName, newEditionOnComment);
+        editComment(id, loginData.token, strategyId, newEditionOnComment);
     }
 
     return (
@@ -229,7 +220,7 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
                         alt=''
                         height={24}
                         width={24}
-                        onClick={(e) => deleteComment(id, loginData.token, strategyName)}
+                        onClick={(e) => deleteComment(id, loginData.token, strategyId)}
                     />
                 ) : null}
             </div>
@@ -263,7 +254,7 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
                               date={reply.date}
                               text={reply.text}
                               id={reply.id}
-                              strategyName={strategyName}
+                              strategyId={strategyId}
                           />
                       );
                   })
@@ -272,12 +263,12 @@ function BaseCommentary({ author, date, text, replies, id, strategyName }: baseC
     );
 }
 
-function ResponseCommentary({ author, date, text, id, strategyName }: responseCommentaryProps) {
+function ResponseCommentary({ author, date, text, id, strategyId }: responseCommentaryProps) {
     const [newEditionOnComment, setNewEditionOnComment] = useState('');
     const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
 
     function handleSendEdit() {
-        editComment(id, loginData.token, strategyName, newEditionOnComment);
+        editComment(id, loginData.token, strategyId, newEditionOnComment);
     }
 
     const formatedDate = new Date(date).toLocaleString('en-US');
@@ -309,7 +300,7 @@ function ResponseCommentary({ author, date, text, id, strategyName }: responseCo
                         alt=''
                         height={24}
                         width={24}
-                        onClick={(e) => deleteComment(id, loginData.token, strategyName)}
+                        onClick={(e) => deleteComment(id, loginData.token, strategyId)}
                     />
                 ) : null}
             </div>
