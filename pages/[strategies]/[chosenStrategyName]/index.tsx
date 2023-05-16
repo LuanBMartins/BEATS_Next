@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Skeleton } from '../../../src/components/Skeleton';
 import { StrategyDetails } from '../../../src/components/StrategyDetails';
 import { useFetch } from '../../../src/hooks/useFetch';
+import { useEffect, useState } from  'react'
 
 interface dataRetrievedType {
     a: boolean;
@@ -33,7 +34,8 @@ export default function StrategyDetailsPage() {
 
     const routeToFetch = router.asPath.slice(1);
     const { data, error } = useFetch(routeToFetch);
-    const { data: commentaryData, error: commentaryError } = useFetch(routeToFetch + '/comments', 500);
+    const { data: commentaryData, error: commentaryError } = useFetch(routeToFetch + '/comments');
+
 
     if (router.isFallback || !data) {
         return (

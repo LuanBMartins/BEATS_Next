@@ -2,8 +2,10 @@ import Image from 'next/image';
 import { useGlobalData } from '../../../contexts/GlobalDataContext';
 import axios from 'axios';
 import { urlApi } from '../../hooks/environments';
-import {  useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import { AddOrEditCommentariesFormField } from '../Formfields';
+import { useRouter } from 'next/router';
+import { customApi } from '../../hooks/useFetch'
 
 interface commentaryProps {
     commentaries: any;
@@ -17,6 +19,12 @@ interface baseCommentaryProps {
     replies?: Array<any>;
     text: 'string';
     strategyId: number;
+    usuario: {
+        email: string
+    }
+    setReset: Dispatch<any>
+    setIsLoading: Dispatch<any>
+    reset: boolean
 }
 
 interface responseCommentaryProps {
@@ -25,9 +33,15 @@ interface responseCommentaryProps {
     text: string;
     id: string;
     strategyId: number;
+    usuario: {
+        email: string
+    }
+    setReset: Dispatch<any>
+    setIsLoading: Dispatch<any>
+    reset: boolean
 }
 
-function deleteComment(id: string, token: string, strategyId: number) {
+async function deleteComment(id: string, token: string, strategyId: number) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -42,7 +56,7 @@ function deleteComment(id: string, token: string, strategyId: number) {
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-function editComment(id: string, token: string, strategyId: number, comment: string) {
+async function editComment(id: string, token: string, strategyId: number, comment: string) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -63,7 +77,7 @@ function editComment(id: string, token: string, strategyId: number, comment: str
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-function addBaseComment(token: string, strategyId: number, comment: string) {
+async function addBaseComment(token: string, strategyId: number, comment: string) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -84,7 +98,7 @@ function addBaseComment(token: string, strategyId: number, comment: string) {
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-function addResponseComment(id: string, token: string, strategyId: number, comment: string) {
+async function addResponseComment(id: string, token: string, strategyId: number, comment: string) {
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -105,14 +119,39 @@ function addResponseComment(id: string, token: string, strategyId: number, comme
         .catch((errorReturnedFromAPI) => console.log(errorReturnedFromAPI.response));
 }
 
-export function Commentaries({ commentaries, strategyId }: commentaryProps) {
-    const { loginData } = useGlobalData();
+function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
+export function Commentaries({ commentaries: initialCommentaries, strategyId }: commentaryProps) {
+    const { loginData } = useGlobalData();
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
+    const [commentaries, setCommentaries] = useState(initialCommentaries);
+    const [reset, setReset] = useState(false)
+
+    useEffect(() => {
+        const routeToFetch = router.asPath.slice(1);
+        delay(700).then(() => {
+            customApi.methodGet(routeToFetch + '/comments', {}, (httpResponse) => {
+                setCommentaries(httpResponse.data)
+            })
+        }).finally(() => {
+            setIsLoading(false)
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reset])
 
     function handleSendNewBaseComment() {
-        addBaseComment(loginData.token, strategyId, newComment);
+        setIsLoading(true)
+        addBaseComment(loginData.token, strategyId, newComment).then(() => {
+            setIsCommentBoxOpen(false)
+            setNewComment('')
+        }).finally(() => {
+            setReset(!reset)
+        });
     }
 
     const isUserLoggedIn = loginData.status == 'logged-in' ? true : false;
@@ -149,21 +188,28 @@ export function Commentaries({ commentaries, strategyId }: commentaryProps) {
                         />
                     ) : null}
                 </div>
-                {commentaries &&
-                    commentaries.comments.map((commentary: baseCommentaryProps) => {
-                        // console.log(commentary);
-                        return (
-                            <BaseCommentary
-                                key={commentary.id}
-                                author={commentary.author}
-                                date={commentary.date}
-                                text={commentary.text}
-                                replies={commentary.replies}
-                                id={commentary.id}
-                                strategyId={strategyId}
-                            />
-                        );
-                    })}
+                {isLoading ?
+                    <div className="flex justify-center items-center">
+                        <p>Aguarde...</p>
+                    </div>
+                    : commentaries && commentaries.comments && (commentaries.comments.length > 0) ?
+                        commentaries.comments.map((commentary: baseCommentaryProps) => {
+                            return (
+                                <BaseCommentary
+                                    key={commentary.id}
+                                    author={commentary.author}
+                                    date={commentary.date}
+                                    text={commentary.text}
+                                    replies={commentary.replies}
+                                    id={commentary.id}
+                                    strategyId={strategyId}
+                                    usuario={commentary.usuario}
+                                    setReset={setReset}
+                                    reset={reset}
+                                    setIsLoading={setIsLoading}
+                                />
+                            );
+                        }) : null}
                 {/* <BaseCommentary />
                 <ResponseCommentary /> */}
             </div>
@@ -171,30 +217,47 @@ export function Commentaries({ commentaries, strategyId }: commentaryProps) {
     );
 }
 
-function BaseCommentary({ author, date, text, replies, id, strategyId }: baseCommentaryProps) {
+function BaseCommentary({ author, date, text, replies, id, strategyId, usuario, setReset, setIsLoading, reset }: baseCommentaryProps) {
+    const router = useRouter();
     const [newComment, setNewComment] = useState('');
     const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
 
     const [newEditionOnComment, setNewEditionOnComment] = useState('');
     const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
 
-    // useEffect(() => {
-    //     console.log(newComment);
-    // }, [newComment]);
-
     const formatedDate = new Date(date).toLocaleString('en-US');
     const { loginData } = useGlobalData();
 
     const isUserLoggedIn = loginData.status == 'logged-in' ? true : false;
     const isUserAllowedToEditOrDelete =
-        loginData.username == author || loginData.userType == 'Administrator' ? true : false;
+        loginData.username == usuario.email || loginData.userType == 'Administrator' ? true : false;
 
     function handleSendResponseComment() {
-        addResponseComment(id, loginData.token, strategyId, newComment);
+        setIsLoading(true)
+        addResponseComment(id, loginData.token, strategyId, newComment).then(() => {
+            setIsCommentBoxOpen(false)
+            setNewComment('')
+        }).finally(() => {
+            setReset(!reset)
+        });
     }
 
     function handleSendEdit() {
-        editComment(id, loginData.token, strategyId, newEditionOnComment);
+        setIsLoading(true)
+        editComment(id, loginData.token, strategyId, newEditionOnComment).then(() => {
+            setIsEditBoxOpen(false)
+            setNewEditionOnComment('')
+        }).finally(() => {
+            setReset(!reset)
+        });;
+    }
+
+    function handleDelete(id: string, token: string) {
+        setIsLoading(true)
+        deleteComment(id, token, strategyId).then(() => { })
+            .finally(() => {
+                setReset(!reset)
+            });
     }
 
     return (
@@ -220,7 +283,7 @@ function BaseCommentary({ author, date, text, replies, id, strategyId }: baseCom
                         alt=''
                         height={24}
                         width={24}
-                        onClick={(e) => deleteComment(id, loginData.token, strategyId)}
+                        onClick={(e) => handleDelete(id, loginData.token)}
                     />
                 ) : null}
             </div>
@@ -247,28 +310,44 @@ function BaseCommentary({ author, date, text, replies, id, strategyId }: baseCom
 
             {replies
                 ? replies.map((reply) => {
-                      return (
-                          <ResponseCommentary
-                              key={reply.id}
-                              author={reply.author}
-                              date={reply.date}
-                              text={reply.text}
-                              id={reply.id}
-                              strategyId={strategyId}
-                          />
-                      );
-                  })
+                    return (
+                        <ResponseCommentary
+                            key={reply.id}
+                            author={reply.author}
+                            date={reply.date}
+                            text={reply.text}
+                            id={reply.id}
+                            strategyId={strategyId}
+                            usuario={reply.usuario}
+                            setReset={setReset}
+                            reset={reset}
+                            setIsLoading={setIsLoading}
+                        />
+                    );
+                })
                 : null}
         </div>
     );
 }
 
-function ResponseCommentary({ author, date, text, id, strategyId }: responseCommentaryProps) {
+function ResponseCommentary({ author, date, text, id, strategyId, usuario, setReset, setIsLoading, reset }: responseCommentaryProps) {
     const [newEditionOnComment, setNewEditionOnComment] = useState('');
     const [isEditBoxOpen, setIsEditBoxOpen] = useState(false);
 
     function handleSendEdit() {
-        editComment(id, loginData.token, strategyId, newEditionOnComment);
+        setIsLoading(true)
+        editComment(id, loginData.token, strategyId, newEditionOnComment).then(() => { })
+            .finally(() => {
+                setReset(!reset)
+            });;
+    }
+
+    function handleDelete(id: string, token: string) {
+        setIsLoading(true)
+        deleteComment(id, token, strategyId).then(() => { })
+            .finally(() => {
+                setReset(!reset)
+            });
     }
 
     const formatedDate = new Date(date).toLocaleString('en-US');
@@ -277,7 +356,7 @@ function ResponseCommentary({ author, date, text, id, strategyId }: responseComm
 
     const isUserLoggedIn = loginData.status == 'logged-in' ? true : false;
     const isUserAllowedToEditOrDelete =
-        loginData.username == author || loginData.userType == 'Administrator' ? true : false;
+        loginData.username == usuario.email || loginData.userType == 'Administrator' ? true : false;
 
     return (
         <>
@@ -300,7 +379,7 @@ function ResponseCommentary({ author, date, text, id, strategyId }: responseComm
                         alt=''
                         height={24}
                         width={24}
-                        onClick={(e) => deleteComment(id, loginData.token, strategyId)}
+                        onClick={(e) => handleDelete(id, loginData.token)}
                     />
                 ) : null}
             </div>
