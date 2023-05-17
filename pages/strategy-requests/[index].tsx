@@ -15,6 +15,7 @@ export default function StrategyDetailsPage() {
             (response: AxiosResponse<any>) => {
                 setStrategy(response.data)
             })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
