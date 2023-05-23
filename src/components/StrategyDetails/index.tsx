@@ -141,5 +141,4 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
             <Commentaries strategyId={strategyData.id} commentaries={commentaries} />
         </>
     );
-    
 }
