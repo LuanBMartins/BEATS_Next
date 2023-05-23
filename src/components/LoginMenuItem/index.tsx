@@ -19,6 +19,8 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
             (optionName == 'Sign Up' && '/signup') ||
             (optionName == 'Request New Strategy' && '/register-strategy') ||
             (optionName == 'My Requests Status' && '/my-requests') ||
+            (optionName == 'Suggestion' && '/suggestion/form') ||
+            (optionName == 'Suggestions' && '/suggestion/details') ||
             (optionName == 'Profile' && '/profile') ||
             (optionName == 'About Us' && '/about') ||
             (optionName == 'Logout' && '/') ||

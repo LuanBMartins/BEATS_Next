@@ -79,6 +79,7 @@ function StandardUserTypeList({ username }: loggedUserProps) {
                 <LoginMenuItem iconName='person_outline' optionName='Profile' />
                 <LoginMenuItem iconName='ballot' optionName='My Requests Status' />
                 <LoginMenuItem iconName='add' optionName='Request New Strategy' />
+                <LoginMenuItem iconName='add' optionName='Suggestion' />
                 <LoginMenuItem iconName='logout' optionName='Logout' />
             </ul>
             <h5 className='font-SourceSans text-sm mb-2'>Info</h5>
@@ -120,6 +121,7 @@ function AdministratorTypeList({ username }: loggedUserProps) {
                 <LoginMenuItem iconName='person_outline' optionName='Profile' />
                 <LoginMenuItem iconName='person_search' optionName='Search Users' />
                 <LoginMenuItem iconName='info' optionName='strategy requests'/>
+                <LoginMenuItem iconName='info' optionName='Suggestions' />
                 <LoginMenuItem iconName='add' optionName='Add New Strategy' />
                 <LoginMenuItem iconName='logout' optionName='Logout' />
             </ul>
