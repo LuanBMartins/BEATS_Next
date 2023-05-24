@@ -119,7 +119,6 @@ function AdministratorTypeList({ username }: loggedUserProps) {
             <h5 className='font-SourceSans text-sm mb-2'>Actions</h5>
             <ul>
                 <LoginMenuItem iconName='person_outline' optionName='Profile' />
-                <LoginMenuItem iconName='person_search' optionName='Search Users' />
                 <LoginMenuItem iconName='info' optionName='strategy requests'/>
                 <LoginMenuItem iconName='info' optionName='Suggestions' />
                 <LoginMenuItem iconName='add' optionName='Add New Strategy' />

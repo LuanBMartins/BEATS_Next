@@ -119,19 +119,12 @@ export function StrategyDetails({ strategyData, commentaries }: strategyDataProp
 
                     <TextAreaFormField disabled={true} fieldName='References' fieldValue={references} />
                 </div>
-                <div className='border border-beatsGreen-700 rounded-10px p-6 col-start-4 col-span-1 w-3/4 mx-auto h-60'>
-                    <button
-                        type='submit'
-                        className='h-12 w-full rounded-md bg-beatsGreen-500 text-beatsWhite-full font-bold mb-4
-                transition duration-400 ease-in hover:brightness-125 active:brightness-125 active:ring-2 active:ring-beatsGreen-700 active:ring-brightness-125'
-                    >
-                        Request Changes
-                    </button>
-                    <div className='mb-4'>
+                <div className=''>
+                    <div className='mb-4 border border-beatsGreen-700 rounded-10px p-2  w-4/4 mx-auto'>
                         <p className='font-bold'>Author:</p>
                         <p className=''>{strategyData.username_creator}</p>
                     </div>
-                    <div>
+                    <div className='border border-beatsGreen-700 rounded-10px p-2 w-4/4 mx-auto'>
                         <p className='font-bold'>Published on:</p>
                         <p className=''>{formatedDate}</p>
                     </div>

@@ -4,10 +4,10 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useGlobalData } from '../../../contexts/GlobalDataContext';
 import { Container } from '../../../src/components/Container';
-import { TextFormFieldNoDecorator } from '../../../src/components/Formfields';
+import { TextFormFieldNoDecorator, TextFormField } from '../../../src/components/Formfields';
 import { ImageContainer } from '../../../src/components/ImageContainer';
 import { customApi } from '../../hooks/useFetch'
-import { urlApi } from '../../../src/hooks/environments';
+
 import MessageBox from '../messageBox';
 
 export default function ProfileDetails() {
@@ -92,23 +92,24 @@ export default function ProfileDetails() {
                 <h1 className='font-Montserrat text-4xl'>Profile</h1>
 
                 <div className='w-2/5 flex flex-col gap-8 justify-between mb-10'>
-                    <TextFormFieldNoDecorator
+                    <TextFormField
                         fieldName='Full Name'
+                        disabled={true}
                         fieldValue={username}
                         settingFunction={setFullname}
                     />
-                    <TextFormFieldNoDecorator
+                    <TextFormField
                         fieldName='E-mail'
                         fieldType='email'
                         fieldValue={email}
                         settingFunction={setEmail}
                     />
-                    <TextFormFieldNoDecorator
+                    <TextFormField
                         fieldValue={senha}
                         settingFunction={setPassword}
                         fieldName='Password (Should contain exactly 12 characters)'
                     />
-                    <TextFormFieldNoDecorator
+                    <TextFormField
                         fieldValue={perfil_github}
                         settingFunction={setGithub}
                         fieldName='GitHub Account'

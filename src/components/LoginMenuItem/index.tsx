@@ -13,11 +13,13 @@ export function LoginMenuItem({ optionName, iconName }: LoginMenuItemsProps) {
     const { toggleOffAllSecurityInformationAttributes: toggleOffAttributes, setLoginData } = useGlobalData();
     
     function navigateOnClick(e: any) {
+        
         const pageToNavigate =
             (optionName == 'Log In' && '/login') ||
             (optionName == 'strategy requests' && '/strategy-requests') ||
             (optionName == 'Sign Up' && '/signup') ||
             (optionName == 'Request New Strategy' && '/register-strategy') ||
+            (optionName == 'Add New Strategy' && '/register-strategy') ||
             (optionName == 'My Requests Status' && '/my-requests') ||
             (optionName == 'Suggestion' && '/suggestion/form') ||
             (optionName == 'Suggestions' && '/suggestion/details') ||
